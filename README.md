@@ -1,28 +1,28 @@
 # JokeOverflow
 ## Specifications
 
-### Introduction
-#### Purpose
+### 1. Introduction
+#### A. Purpose
 
-#### Intended audience
-#### Project scope
-#### Document conventions
-#### References
-### Description
-#### Product respective
-#### Features
-#### User overview
-#### Operating environment
-#### Contraints: implementation/design
-#### Documentation
-#### Assumptions / dependencies
+#### B. Intended audience
+#### C. Project scope
+#### D. Document conventions
+#### E. References
+### 2. Description
+#### A. Product respective
+#### B. Features
+#### C. User overview
+#### D. Operating environment
+#### E. Contraints: implementation/design
+#### F. Documentation
+#### G. Assumptions / dependencies
 
-### System features
-#### Feature 1
-#### Feature 2
-#### Feature 3
+### 3. System features
+#### A. Feature 1
+#### B. Feature 2
+#### C. Feature 3
 
-### Additional nonfunctional requirements
-#### Performance
-#### Security
-#### Software quality
+### 4. Additional nonfunctional requirements
+#### A. Performance
+#### B. Security
+#### C. Software quality

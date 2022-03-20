@@ -11,18 +11,18 @@ Everyone, the expected audience should be the quite young.
 Get a maximum of knowledge in android development and in versioning.
 
 ## II. User stories
--As a visitor I want to be able to read jokes.
--As a visitor I want to be able to register/login.
--As a visitor I want to be able to check the users leaderboard.
--As a visitor I want to be able to check the best jokes.
--As a visitor I want to be able to search for jokes.
-
--As a user I want to be able to do everything that the visitor can do.
--As a user I want to create/edit/delete jokes.
--As a user I want to be able to rate jokes.
--As a user I want to be able to respond jokes.
--As a user I want to be able to edit my account.
--As a user I want to be able to save prefered tags and categories.
+- As a visitor I want to be able to read jokes.
+- As a visitor I want to be able to register/login.
+- As a visitor I want to be able to check the users leaderboard.
+- As a visitor I want to be able to check the best jokes.
+- As a visitor I want to be able to search for jokes.
+ 
+- As a user I want to be able to do everything that the visitor can do.
+- As a user I want to create/edit/delete jokes.
+- As a user I want to be able to rate jokes.
+- As a user I want to be able to respond jokes.
+- As a user I want to be able to edit my account.
+- As a user I want to be able to save prefered tags and categories.
 ## III. Requirements
 #### A.  Account system
 User is able to create his own account. It allows score saving, posting jokes, participating to the referencing

@@ -35,6 +35,6 @@ Users can grind the leaderboard depending on the number of posts and the grading
 #### D. Search system
 The users can find specific jokes by filtering by tag (keyword).
 
-### IV. User overview
+## IV. User overview
 
 ![](https://cdn.discordapp.com/attachments/667443778478407680/955113753270157373/unknown.png)

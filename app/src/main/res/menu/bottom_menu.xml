@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:title="@string/nav_home"
+        android:icon="@drawable/ic_home"/>
+
+    <item
+        android:id="@+id/leaderboardFragment"
+        android:title="@string/nav_leaderboard"
+        android:icon="@drawable/ic_leaderboard"/>
+
+    <item
+        android:id="@+id/bestjokesFragment"
+        android:title="@string/nav_bestjokes"
+        android:icon="@drawable/ic_bestjokes" />
+</menu>

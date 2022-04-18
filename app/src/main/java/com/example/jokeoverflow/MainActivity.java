@@ -9,13 +9,16 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
+    private FloatingActionButton floatingActionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +39,18 @@ public class MainActivity extends AppCompatActivity {
                     navController.navigate(R.id.leaderboardFragment);
                 } else if(item.getItemId() == R.id.bestjokesFragment){
                     navController.navigate(R.id.bestjokesFragment);
+                } else if(item.getItemId() == R.id.searchFragment){
+                    navController.navigate(R.id.searchFragment);
                 }
 
                 return true;
             }
+        });
+
+        floatingActionButton = findViewById(R.id.addJokeFab);
+        floatingActionButton.setOnClickListener(v -> {
+            Toast.makeText(this, "FAB clicked", Toast.LENGTH_SHORT).show();
+            navController.navigate(R.id.addjokeFragment);
         });
 
     }

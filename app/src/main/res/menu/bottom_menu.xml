@@ -15,4 +15,9 @@
         android:id="@+id/bestjokesFragment"
         android:title="@string/nav_bestjokes"
         android:icon="@drawable/ic_bestjokes" />
+
+    <item
+        android:id="@+id/searchFragment"
+        android:title="@string/nav_search"
+        android:icon="@drawable/ic_search" />
 </menu>

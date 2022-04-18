@@ -1,12 +1,24 @@
 package com.example.jokeoverflow;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.jokeoverflow.Adapter.JokeAdapter;
+import com.example.jokeoverflow.Model.Joke;
+import com.example.jokeoverflow.ViewModel.JokesViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +26,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +37,13 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+
+    RecyclerView recyclerView;
+    JokeAdapter jokeAdapter;
+
+    ArrayList<Joke> jokes;
+    JokesViewModel jokesViewModel;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -59,6 +80,29 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        recyclerView = view.findViewById(R.id.homeRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        jokesViewModel = new ViewModelProvider(this).get(JokesViewModel.class);
+        jokesViewModel.init();
+
+        jokesViewModel.getJokesList().observe(getViewLifecycleOwner(), new Observer<List<Joke>>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChanged(List<Joke> jokes) {
+                jokesViewModel.deleteAllJokes();
+                jokesViewModel.addAll(jokes);
+                jokeAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+        jokeAdapter = new JokeAdapter((ArrayList<Joke>) jokesViewModel.getJokesList().getValue());
+
+        recyclerView.setAdapter(jokeAdapter);
+
+        return view;
     }
 }

@@ -20,4 +20,14 @@
         android:name="com.example.jokeoverflow.BestjokesFragment"
         android:label="fragment_bestjokes"
         tools:layout="@layout/fragment_bestjokes" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.jokeoverflow.searchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/addjokeFragment"
+        android:name="com.example.jokeoverflow.addjokeFragment"
+        android:label="fragment_addjoke"
+        tools:layout="@layout/fragment_addjoke" />
 </navigation>

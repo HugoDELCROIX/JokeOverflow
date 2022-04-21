@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel;
 import com.example.jokeoverflow.Model.Joke;
 import com.example.jokeoverflow.Repository.JokeRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class JokesViewModel extends ViewModel {
@@ -25,16 +24,19 @@ public class JokesViewModel extends ViewModel {
     }
 
     public LiveData<List<Joke>> getJokesList(){
-        return jokes;
+        this.retrieve();
+        return jokeRepository.getAllJokes();
     }
 
     public void deleteAllJokes(){
         jokeRepository.deleteAllJokes();
     }
 
-    public void addAll(List<Joke> jokes){
+    public void retrieve(){
         jokeRepository.addJokes();
     }
 
-
+    public void addJoke(Joke joke){
+        jokeRepository.addJoke(joke);
+    }
 }

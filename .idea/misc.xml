@@ -13,8 +13,11 @@
         <entry key="app/src/main/res/layout/fragment_bestjokes.xml" value="0.3697916666666667" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_leaderboard.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_register.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.2791666666666667" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.2708333333333333" />
       </map>
     </option>
   </component>

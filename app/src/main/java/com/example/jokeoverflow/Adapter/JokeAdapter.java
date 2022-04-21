@@ -26,6 +26,10 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder>{
         this.jokes = jokes;
     }
 
+    public void setJokes(ArrayList<Joke> jokes){
+        this.jokes = jokes;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,6 +52,8 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Joke currentJoke = jokes.get(position);
+
+
 
         holder.date.setText(currentJoke.getDate());
         holder.title.setText(currentJoke.getTitle());

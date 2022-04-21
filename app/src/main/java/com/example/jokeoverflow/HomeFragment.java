@@ -88,18 +88,16 @@ public class HomeFragment extends Fragment {
         jokesViewModel = new ViewModelProvider(this).get(JokesViewModel.class);
         jokesViewModel.init();
 
+
+        jokeAdapter = new JokeAdapter(jokes);
         jokesViewModel.getJokesList().observe(getViewLifecycleOwner(), new Observer<List<Joke>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged(List<Joke> jokes) {
-                jokesViewModel.deleteAllJokes();
-                jokesViewModel.addAll(jokes);
+                jokeAdapter.setJokes((ArrayList<Joke>) jokes);
                 jokeAdapter.notifyDataSetChanged();
             }
         });
-
-
-        jokeAdapter = new JokeAdapter((ArrayList<Joke>) jokesViewModel.getJokesList().getValue());
 
         recyclerView.setAdapter(jokeAdapter);
 

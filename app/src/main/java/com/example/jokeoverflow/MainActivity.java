@@ -2,11 +2,15 @@ package com.example.jokeoverflow;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.preference.PreferenceManager;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -49,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         floatingActionButton = findViewById(R.id.addJokeFab);
         floatingActionButton.setOnClickListener(v -> {
-            Toast.makeText(this, "FAB clicked", Toast.LENGTH_SHORT).show();
             navController.navigate(R.id.addjokeFragment);
         });
 

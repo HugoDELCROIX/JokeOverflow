@@ -94,7 +94,7 @@ public class addjokeFragment extends Fragment {
         NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment);
         NavController navController = navHostFragment.getNavController();
 
-        if(userViewModel.getUser() == null){
+        if(userViewModel.getFirebaseAuth().getCurrentUser() == null){
             navController.navigate(R.id.loginFragment);
         }
 

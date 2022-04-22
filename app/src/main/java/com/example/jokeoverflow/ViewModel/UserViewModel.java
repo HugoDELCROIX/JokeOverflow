@@ -7,7 +7,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 public class UserViewModel extends ViewModel {
 
@@ -51,6 +54,10 @@ public class UserViewModel extends ViewModel {
 
     public Task<Void> addUserToDatabase(User user){
         return firebaseDatabase.getReference("Users").child(getFirebaseAuth().getCurrentUser().getUid()).setValue(user);
+    }
+
+    public DatabaseReference retrieveUserFromDatabase(){
+        return firebaseDatabase.getReference("Users").child(getFirebaseAuth().getCurrentUser().getUid());
     }
 
     public void signOutUser(){

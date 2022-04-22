@@ -12,6 +12,7 @@ import androidx.preference.PreferenceManager;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private FloatingActionButton floatingActionButton;
+    private NavController navController;
+    private NavHostFragment navHostFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        final NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-        NavController navController = navHostFragment.getNavController();
+        // navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        navController = getNavController();
 
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
@@ -58,4 +61,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public NavController getNavController(){
+        navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        return navHostFragment.getNavController();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.top_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.mybutton){
+            getNavController().navigate(R.id.profileFragment);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

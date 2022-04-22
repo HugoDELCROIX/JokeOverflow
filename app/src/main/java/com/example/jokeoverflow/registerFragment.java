@@ -5,7 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,11 +24,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link registerFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class registerFragment extends Fragment {
 
     private EditText registerEmail;
@@ -34,51 +31,31 @@ public class registerFragment extends Fragment {
     private EditText registerUsername;
     private EditText registerFullname;
     private EditText registerAge;
-
+    private TextView registerToLogin;
     private Button registerButton;
 
-    private TextView registerToLogin;
-
+    private NavController navController;
     private UserViewModel userViewModel;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public registerFragment() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment registerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static registerFragment newInstance(String param1, String param2) {
-        registerFragment fragment = new registerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    }
+
+    private void initWidgets(View view){
+        registerEmail = view.findViewById(R.id.registerEmail);
+        registerUsername = view.findViewById(R.id.registerUsername);
+        registerFullname = view.findViewById(R.id.registerFullname);
+        registerPassword = view.findViewById(R.id.registerPassword);
+        registerAge = view.findViewById(R.id.registerAge);
+        registerButton = view.findViewById(R.id.registerButton);
+        registerToLogin = view.findViewById(R.id.registerToLogin);
     }
 
     @Override
@@ -91,74 +68,75 @@ public class registerFragment extends Fragment {
         userViewModel.init();
 
 
-        // Initializing widgets
-        registerEmail = view.findViewById(R.id.registerEmail);
-        registerUsername = view.findViewById(R.id.registerUsername);
-        registerFullname = view.findViewById(R.id.registerFullname);
-        registerPassword = view.findViewById(R.id.registerPassword);
-        registerAge = view.findViewById(R.id.registerAge);
-        registerButton = view.findViewById(R.id.registerButton);
+        initWidgets(view);
 
-        registerToLogin = view.findViewById(R.id.registerToLogin);
+        NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment);
+        assert navHostFragment != null;
+        navController = navHostFragment.getNavController();
+
 
         // Registering the user
         registerButton.setOnClickListener(v -> {
-
-            String userEmail = registerEmail.getText().toString();
-            String userUsername = registerUsername.getText().toString();
-            String userFullname = registerFullname.getText().toString();
-            String userPassword = registerPassword.getText().toString();
-            String userAge = registerAge.getText().toString();
-
-            if(TextUtils.isEmpty(userEmail)){
-                registerEmail.setError("Email cannot be empty");
-                registerEmail.requestFocus();
-            } else if(TextUtils.isEmpty(userPassword)){
-                registerPassword.setError("Password cannot be empty");
-                registerPassword.requestFocus();
-            } else if (TextUtils.isEmpty(userFullname)){
-                registerFullname.setError("You must enter a full name");
-                registerFullname.requestFocus();
-            } else if (TextUtils.isEmpty(userUsername)){
-                registerUsername.setError("You must enter valid username");
-                registerUsername.requestFocus();
-            } else if (TextUtils.isEmpty(userAge)){
-                registerAge.setError("You must enter your age");
-                registerAge.requestFocus();
-            }
-
-            userViewModel.createUser(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-
-                        User user = new User(userEmail, userFullname, userUsername, Integer.parseInt(userAge));
-
-                        userViewModel.addUserToDatabase(user).addOnCompleteListener(new OnCompleteListener() {
-                            @Override
-                            public void onComplete(@NonNull Task task) {
-
-                                if(task.isSuccessful()){
-                                    Toast.makeText(getContext(), "User registered", Toast.LENGTH_SHORT).show();
-                                    Navigation.findNavController(view).navigate(R.id.loginFragment);
-                                } else {
-                                    Toast.makeText(getContext(), "User not added to database", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-                        });
-
-                    } else {
-                        Toast.makeText(getContext(), "User not registered :(", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            registerUser();
         });
 
+        // Redirecting the user to the login fragment
         registerToLogin.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.loginFragment);
+            navController.navigate(R.id.loginFragment);
         });
 
         return view;
+    }
+
+    private void registerUser(){
+        String userEmail = registerEmail.getText().toString();
+        String userUsername = registerUsername.getText().toString();
+        String userFullname = registerFullname.getText().toString();
+        String userPassword = registerPassword.getText().toString();
+        String userAge = registerAge.getText().toString();
+
+        if(TextUtils.isEmpty(userEmail)){
+            registerEmail.setError("Email cannot be empty");
+            registerEmail.requestFocus();
+        } else if(TextUtils.isEmpty(userPassword)){
+            registerPassword.setError("Password cannot be empty");
+            registerPassword.requestFocus();
+        } else if (TextUtils.isEmpty(userFullname)){
+            registerFullname.setError("You must enter a full name");
+            registerFullname.requestFocus();
+        } else if (TextUtils.isEmpty(userUsername)){
+            registerUsername.setError("You must enter valid username");
+            registerUsername.requestFocus();
+        } else if (TextUtils.isEmpty(userAge)){
+            registerAge.setError("You must enter your age");
+            registerAge.requestFocus();
+        }
+
+        userViewModel.createUser(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+
+                    User user = new User(userEmail, userFullname, userUsername, Integer.parseInt(userAge));
+
+                    userViewModel.addUserToDatabase(user).addOnCompleteListener(new OnCompleteListener() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+
+                            if(task.isSuccessful()){
+                                Toast.makeText(getContext(), "User registered", Toast.LENGTH_SHORT).show();
+                                navController.navigate(R.id.loginFragment);
+                            } else {
+                                Toast.makeText(getContext(), "User not added to database", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(getContext(), "User not registered :(", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

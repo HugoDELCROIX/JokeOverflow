@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "812950264142",
+    "firebase_url": "https://jokeoverflow-3db4b-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "jokeoverflow-3db4b",
+    "storage_bucket": "jokeoverflow-3db4b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812950264142:android:ec6a31013148d40cb1661f",
+        "android_client_info": {
+          "package_name": "com.example.jokeoverflow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "812950264142-kaqcsv6af818mfdvugt22co1lrmqkobk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcfLetkECGAH6_c2Id3JZiV41yJyX1W1c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "812950264142-kaqcsv6af818mfdvugt22co1lrmqkobk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

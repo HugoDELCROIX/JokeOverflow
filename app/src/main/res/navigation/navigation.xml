@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.jokeoverflow.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_addjokeFragment"
+            app:destination="@id/addjokeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/leaderboardFragment"
         android:name="com.example.jokeoverflow.LeaderboardFragment"
@@ -29,5 +33,32 @@
         android:id="@+id/addjokeFragment"
         android:name="com.example.jokeoverflow.addjokeFragment"
         android:label="fragment_addjoke"
-        tools:layout="@layout/fragment_addjoke" />
+        tools:layout="@layout/fragment_addjoke" >
+        <action
+            android:id="@+id/action_addjokeFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.jokeoverflow.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.jokeoverflow.loginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.jokeoverflow.registerFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.jokeoverflow.profileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

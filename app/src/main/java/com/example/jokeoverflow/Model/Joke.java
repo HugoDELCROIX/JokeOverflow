@@ -2,13 +2,18 @@ package com.example.jokeoverflow.Model;
 
 public class Joke {
 
+    private String key;
     private String title;
     private String date;
     private String content;
-    private float rating;
-    private int userId;
+    private double rating;
+    private String userId;
 
-    public Joke(String title, String date, String content, float rating, int userId){
+    public Joke(){
+
+    }
+
+    public Joke(String title, String date, String content, double rating, String userId){
         this.title = title;
         this.date = date;
         this.content = content;
@@ -16,7 +21,7 @@ public class Joke {
         this.userId = userId;
     }
 
-    public Joke(String title, String date, String content, int userId){
+    public Joke(String title, String date, String content, String userId){
         this.title = title;
         this.date = date;
         this.content = content;
@@ -25,6 +30,12 @@ public class Joke {
 
 
     // Getters
+
+
+    public String getKey() {
+        return key;
+    }
+
     public String getTitle(){
         return this.title;
     }
@@ -37,15 +48,21 @@ public class Joke {
         return this.content;
     }
 
-    public float getRating() {
+    public double getRating() {
         return this.rating;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return this.userId;
     }
 
     // Setters
+
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public void setTitle(String title){
         this.title = title;
     }
@@ -58,11 +75,11 @@ public class Joke {
         this.content = content;
     }
 
-    public void setRating(float rating){
+    public void setRating(double rating){
         this.rating = rating;
     }
 
-    public void setUserId(int userId){
+    public void setUserId(String userId){
         this.userId = userId;
     }
 

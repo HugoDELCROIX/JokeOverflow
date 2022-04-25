@@ -1,10 +1,9 @@
 package com.example.jokeoverflow;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,9 +15,11 @@ import android.view.ViewGroup;
 import com.example.jokeoverflow.Adapter.JokeAdapter;
 import com.example.jokeoverflow.Model.Joke;
 import com.example.jokeoverflow.ViewModel.JokesViewModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -49,18 +50,25 @@ public class HomeFragment extends Fragment {
         jokesViewModel = new ViewModelProvider(this).get(JokesViewModel.class);
         jokesViewModel.init();
 
-
-        jokeAdapter = new JokeAdapter(jokes);
-        jokesViewModel.getJokesList().observe(getViewLifecycleOwner(), new Observer<List<Joke>>() {
-            @SuppressLint("NotifyDataSetChanged")
+        jokesViewModel.retrieveJokesFromDatabase().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChanged(List<Joke> jokes) {
-                jokeAdapter.setJokes((ArrayList<Joke>) jokes);
-                jokeAdapter.notifyDataSetChanged();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                jokes = new ArrayList<>();
+                for(DataSnapshot jokesnap : snapshot.getChildren()){
+                    Joke joke = jokesnap.getValue(Joke.class);
+                    jokes.add(joke);
+                }
+
+                jokeAdapter = new JokeAdapter(jokes);
+                recyclerView.setAdapter(jokeAdapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
-
-        recyclerView.setAdapter(jokeAdapter);
 
         return view;
     }

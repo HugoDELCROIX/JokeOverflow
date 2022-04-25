@@ -2,6 +2,7 @@ package com.example.jokeoverflow;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 import com.example.jokeoverflow.Model.Joke;
 import com.example.jokeoverflow.ViewModel.JokesViewModel;
 import com.example.jokeoverflow.ViewModel.UserViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 public class addjokeFragment extends Fragment {
 
@@ -70,8 +73,19 @@ public class addjokeFragment extends Fragment {
             jokesViewModel = new ViewModelProvider(this).get(JokesViewModel.class);
             jokesViewModel.init();
 
-            jokesViewModel.addJoke(new Joke("title", "19/04/22", "jokeContent", (float) 5.0, 1));
-            Toast.makeText(view.getContext(), "Joke added", Toast.LENGTH_SHORT).show();
+            Joke joke = new Joke(jokeTitle, "19/03/22", jokeContent, 5.0, userViewModel.getFirebaseAuth().getCurrentUser().getUid());
+
+            jokesViewModel.addJokeToDatabase(joke).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(view.getContext(), "Joke added", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(view.getContext(), "Joke couldn't be added", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
         });
 
         return view;

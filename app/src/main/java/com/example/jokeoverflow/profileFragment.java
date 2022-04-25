@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jokeoverflow.Model.User;
+import com.example.jokeoverflow.ViewModel.JokesViewModel;
 import com.example.jokeoverflow.ViewModel.UserViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,10 +33,12 @@ public class profileFragment extends Fragment {
     private TextView fullnameTextView;
     private TextView emailTextView;
     private TextView ageTextView;
+    private TextView nbJokes;
     private Button logoutButton;
 
     private NavController navController;
     private UserViewModel userViewModel;
+    private JokesViewModel jokesViewModel;
 
     public profileFragment() {
     }
@@ -50,6 +54,7 @@ public class profileFragment extends Fragment {
         emailTextView = view.findViewById(R.id.userEmail);
         ageTextView = view.findViewById(R.id.userAge);
         logoutButton = view.findViewById(R.id.logoutButton);
+        nbJokes = view.findViewById(R.id.userNbJokes);
     }
 
     @Override
@@ -58,6 +63,10 @@ public class profileFragment extends Fragment {
 
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+
+        jokesViewModel = new ViewModelProvider(requireActivity()).get(JokesViewModel.class);
+        jokesViewModel.init();
 
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         userViewModel.init();
@@ -71,8 +80,23 @@ public class profileFragment extends Fragment {
         // Redirect user if not logged.
         if(userViewModel.getFirebaseAuth().getCurrentUser() == null){
             navController.navigate(R.id.loginFragment);
+        } else {
+
+            getUserInfo();
+
         }
 
+        logoutButton.setOnClickListener(v -> {
+
+            userViewModel.signOutUser();
+            navController.navigate(R.id.homeFragment);
+
+        });
+
+        return view;
+    }
+
+    private void getUserInfo() {
         // Display data from database
         userViewModel.retrieveUserFromDatabase().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -99,14 +123,17 @@ public class profileFragment extends Fragment {
             }
         });
 
+        // Numbers of joke made the currently connected user
+        jokesViewModel.nbJokesByUser(userViewModel.getFirebaseAuth().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                nbJokes.setText(String.valueOf(snapshot.getChildrenCount()));
+            }
 
-        logoutButton.setOnClickListener(v -> {
-
-            userViewModel.signOutUser();
-            navController.navigate(R.id.homeFragment);
-
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(requireActivity(), "Couldn't get number of posts", Toast.LENGTH_SHORT).show();
+            }
         });
-
-        return view;
     }
 }

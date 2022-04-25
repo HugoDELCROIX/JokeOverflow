@@ -2,6 +2,7 @@ package com.example.jokeoverflow.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jokeoverflow.Model.Joke;
 import com.example.jokeoverflow.R;
+import com.example.jokeoverflow.ViewModel.JokesViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
@@ -33,17 +39,31 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder>{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        JokesViewModel jokesViewModel;
+        jokesViewModel = new ViewModelProvider((ViewModelStoreOwner) parent.getContext()).get(JokesViewModel.class);
+        jokesViewModel.init();
+
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.cards_home, parent, false);
         return new ViewHolder(view, new ClickListener() {
             @Override
             public void onRateUp(int p) {
-                Toast.makeText(view.getContext(), "UP RATE", Toast.LENGTH_SHORT).show();
+                Joke joke = jokes.get(p);
+
+                joke.setRating((double) Math.round((joke.getRating() + 0.3) * 100) / 100);
+                Joke newJoke = jokesViewModel.rate(joke);
+                jokes.set(p, newJoke);
+                notifyItemChanged(p);
             }
 
             @Override
             public void onRateDown(int p) {
-                Toast.makeText(view.getContext(), "DOWN RATE", Toast.LENGTH_SHORT).show();
+                Joke joke = jokes.get(p);
+
+                joke.setRating((double) Math.round((joke.getRating() - 0.3) * 100) / 100);
+                Joke newJoke = jokesViewModel.rate(joke);
+                jokes.set(p, newJoke);
+                notifyItemChanged(p);
             }
         });
     }
@@ -65,7 +85,7 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder>{
             holder.rating.setTextColor(ContextCompat.getColor(holder.rating.getContext(), R.color.blue));
         }
 
-        holder.rating.setText(Float.toString(currentJoke.getRating()));
+        holder.rating.setText(Double.toString(currentJoke.getRating()));
 
     }
 
@@ -109,15 +129,12 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder>{
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()){
-                case R.id.upRateBtn:
-                    this.clickListener.onRateUp(this.getLayoutPosition());
-                    break;
-                case R.id.downRateBtn:
-                    this.clickListener.onRateDown(this.getLayoutPosition());
-                    break;
-                default:
-                    break;
+
+            if(view.getId() == R.id.upRateBtn){
+                this.clickListener.onRateUp(this.getLayoutPosition());
+
+            } else if (view.getId() == R.id.downRateBtn) {
+                this.clickListener.onRateDown(this.getLayoutPosition());
             }
         }
     }

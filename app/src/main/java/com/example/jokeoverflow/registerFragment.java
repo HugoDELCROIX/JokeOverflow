@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,12 +130,12 @@ public class registerFragment extends Fragment {
                             } else {
                                 Toast.makeText(getContext(), "User not added to database", Toast.LENGTH_SHORT).show();
                             }
-
                         }
                     });
 
                 } else {
                     Toast.makeText(getContext(), "User not registered :(", Toast.LENGTH_SHORT).show();
+                    Log.i("registerException", task.getException().toString());
                 }
             }
         });

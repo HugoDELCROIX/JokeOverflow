@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.jokeoverflow.Adapter.JokeAdapter;
 import com.example.jokeoverflow.Model.Joke;
 import com.example.jokeoverflow.ViewModel.JokesViewModel;
+import com.example.jokeoverflow.ViewModel.UserViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -28,6 +29,7 @@ public class HomeFragment extends Fragment {
 
     ArrayList<Joke> jokes;
     JokesViewModel jokesViewModel;
+    UserViewModel userViewModel;
 
     public HomeFragment() {
 

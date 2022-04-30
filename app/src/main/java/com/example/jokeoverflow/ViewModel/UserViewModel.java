@@ -78,8 +78,8 @@ public class UserViewModel extends ViewModel {
         return firebaseDatabase.getReference("Users").child(getFirebaseAuth().getCurrentUser().getUid()).setValue(user);
     }
 
-    public DatabaseReference retrieveUserFromDatabase(){
-        return firebaseDatabase.getReference("Users").child(getFirebaseAuth().getCurrentUser().getUid());
+    public DatabaseReference retrieveUserFromDatabase(String userId){
+        return firebaseDatabase.getReference("Users").child(userId);
     }
 
     public void signOutUser(){

@@ -3,6 +3,7 @@ package com.example.jokeoverflow.Adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +28,7 @@ import com.example.jokeoverflow.Model.Joke;
 import com.example.jokeoverflow.R;
 import com.example.jokeoverflow.ViewModel.JokesViewModel;
 import com.example.jokeoverflow.ViewModel.UserViewModel;
+import com.example.jokeoverflow.userProfileFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -54,9 +60,19 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder>{
         View view = inflater.inflate(R.layout.cards_home, parent, false);
 
         return new ViewHolder(view, new ClickListener() {
+            final AppCompatActivity activity = (AppCompatActivity) view.getContext();
+
+            NavHostFragment navHostFragment  = (NavHostFragment) activity.getSupportFragmentManager().findFragmentById(R.id.fragment);
+            NavController navController = navHostFragment.getNavController();
+
             @Override
             public void onPictureClick(int p) {
-                // When the picture is clicked
+                Joke joke = jokes.get(p);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("userId", joke.getUserId());
+
+                navController.navigate(R.id.userProfileFragment, bundle);
             }
 
             @Override

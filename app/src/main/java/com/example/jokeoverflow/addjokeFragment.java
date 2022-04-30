@@ -80,6 +80,7 @@ public class addjokeFragment extends Fragment {
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
                         Toast.makeText(view.getContext(), "Joke added", Toast.LENGTH_SHORT).show();
+                        navController.navigate(R.id.homeFragment);
                     } else {
                         Toast.makeText(view.getContext(), "Joke couldn't be added", Toast.LENGTH_SHORT).show();
                     }

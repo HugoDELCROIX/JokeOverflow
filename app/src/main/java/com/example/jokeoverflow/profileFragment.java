@@ -129,7 +129,7 @@ public class profileFragment extends Fragment {
 
     private void getUserInfo() {
         // Display data from database
-        userViewModel.retrieveUserFromDatabase().addListenerForSingleValueEvent(new ValueEventListener() {
+        userViewModel.retrieveUserFromDatabase(userViewModel.getFirebaseAuth().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User userProfile = snapshot.getValue(User.class);

@@ -14,8 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.jokeoverflow.Adapter.JokeAdapter;
 import com.example.jokeoverflow.Model.Joke;
-import com.example.jokeoverflow.ViewModel.JokesViewModel;
-import com.example.jokeoverflow.ViewModel.UserViewModel;
+import com.example.jokeoverflow.ViewModel.HomeViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -24,12 +23,12 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
-    RecyclerView recyclerView;
-    JokeAdapter jokeAdapter;
+    private RecyclerView recyclerView;
+    private JokeAdapter jokeAdapter;
 
-    ArrayList<Joke> jokes;
-    JokesViewModel jokesViewModel;
-    UserViewModel userViewModel;
+    private ArrayList<Joke> jokes;
+
+    private HomeViewModel homeViewModel;
 
     public HomeFragment() {
 
@@ -49,10 +48,10 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.homeRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        jokesViewModel = new ViewModelProvider(this).get(JokesViewModel.class);
-        jokesViewModel.init();
+        homeViewModel= new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel.init();
 
-        jokesViewModel.retrieveJokesFromDatabase().addListenerForSingleValueEvent(new ValueEventListener() {
+        homeViewModel.retrieveJokesFromDatabase().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 jokes = new ArrayList<>();

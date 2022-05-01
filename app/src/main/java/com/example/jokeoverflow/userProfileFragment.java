@@ -16,22 +16,20 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.jokeoverflow.Model.User;
-import com.example.jokeoverflow.ViewModel.UserViewModel;
+import com.example.jokeoverflow.ViewModel.ProfileViewModel;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 public class userProfileFragment extends Fragment {
-
-    private String userId;
-
-    private UserViewModel userViewModel;
 
     private ImageView profilePicture;
     private TextView username;
+
+    private ProfileViewModel profileViewModel;
+
+    private String userId;
 
     public userProfileFragment() {
 
@@ -55,10 +53,11 @@ public class userProfileFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        userViewModel.init();
-
         initWidgets(view);
+
+        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+        profileViewModel.init();
+
 
         getUserInformations();
 
@@ -67,12 +66,12 @@ public class userProfileFragment extends Fragment {
     }
 
     private void getUserInformations() {
-        userViewModel.retrieveUserFromDatabase(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        profileViewModel.retrieveUserFromDatabase(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
 
-                userViewModel.getUserProfilePicture(userId).addOnSuccessListener(new OnSuccessListener<Uri>() {
+                profileViewModel.getUserProfilePicture(userId).addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
 

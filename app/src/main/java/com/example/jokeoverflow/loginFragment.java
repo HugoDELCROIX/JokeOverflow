@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.TextUtils;
@@ -18,7 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jokeoverflow.ViewModel.UserViewModel;
+import com.example.jokeoverflow.ViewModel.AuthViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,9 +29,9 @@ public class loginFragment extends Fragment {
     private Button loginBtn;
     private TextView loginToRegister;
 
-    private UserViewModel userViewModel;
-
     private NavController navController;
+
+    private AuthViewModel authViewModel;
 
     public loginFragment() {
 
@@ -57,10 +56,11 @@ public class loginFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        userViewModel.init();
-
         initWidgets(view);
+
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        authViewModel.init();
+
 
         NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment);
         assert navHostFragment != null;
@@ -81,6 +81,8 @@ public class loginFragment extends Fragment {
     }
 
     private void loginUser(){
+
+        // TODO : Reinforce the login security
         String userEmail = loginEmail.getText().toString();
         String userPassword = loginPassword.getText().toString();
 
@@ -92,7 +94,7 @@ public class loginFragment extends Fragment {
             loginPassword.requestFocus();
         }
 
-        userViewModel.loginUser(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        authViewModel.loginUser(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){

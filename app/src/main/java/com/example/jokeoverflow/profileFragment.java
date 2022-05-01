@@ -4,14 +4,12 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -20,8 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,19 +28,17 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.jokeoverflow.Model.User;
-import com.example.jokeoverflow.ViewModel.JokesViewModel;
-import com.example.jokeoverflow.ViewModel.UserViewModel;
+import com.example.jokeoverflow.Repository.UserRepository;
+import com.example.jokeoverflow.ViewModel.ProfileViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.UploadTask;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -61,8 +55,11 @@ public class profileFragment extends Fragment {
     private Uri imageUri;
 
     private NavController navController;
-    private UserViewModel userViewModel;
-    private JokesViewModel jokesViewModel;
+
+    private ProfileViewModel profileViewModel;
+
+    private FirebaseUser currentUser;
+
 
     public profileFragment() {
     }
@@ -89,21 +86,20 @@ public class profileFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-
-        jokesViewModel = new ViewModelProvider(requireActivity()).get(JokesViewModel.class);
-        jokesViewModel.init();
-
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        userViewModel.init();
-
         initWidgets(view);
+
+        currentUser = UserRepository.getLoggedUser();
+
+        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+        profileViewModel.init();
+
 
         NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment);
         assert navHostFragment != null;
         navController = navHostFragment.getNavController();
 
-        // Redirect user if not logged.
-        if(userViewModel.getFirebaseAuth().getCurrentUser() == null){
+        // Redirect user if not logged. could be static method somewhere ?
+        if(currentUser == null){
             navController.navigate(R.id.loginFragment);
         } else {
 
@@ -119,7 +115,7 @@ public class profileFragment extends Fragment {
 
         logoutButton.setOnClickListener(v -> {
 
-            userViewModel.signOutUser();
+            profileViewModel.signOutUser();
             navController.navigate(R.id.homeFragment);
 
         });
@@ -129,14 +125,14 @@ public class profileFragment extends Fragment {
 
     private void getUserInfo() {
         // Display data from database
-        userViewModel.retrieveUserFromDatabase(userViewModel.getFirebaseAuth().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        profileViewModel.retrieveUserFromDatabase(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User userProfile = snapshot.getValue(User.class);
 
                 if(userProfile != null){
 
-                    userViewModel.getUserProfilePicture(Objects.requireNonNull(userViewModel.getFirebaseAuth().getCurrentUser()).getUid()).addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    profileViewModel.getUserProfilePicture(Objects.requireNonNull(currentUser.getUid())).addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             Glide.with(requireActivity()).load(uri).into(profilePicture);
@@ -163,7 +159,7 @@ public class profileFragment extends Fragment {
         });
 
         // Numbers of joke made the currently connected user
-        jokesViewModel.nbJokesByUser(userViewModel.getFirebaseAuth().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        profileViewModel.nbJokesByUser(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 nbJokes.setText(String.valueOf(snapshot.getChildrenCount()));
@@ -182,7 +178,7 @@ public class profileFragment extends Fragment {
             if(result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Intent data = result.getData();
                 imageUri = data.getData();
-                userViewModel.setUserProfilePicture(userViewModel.getFirebaseAuth().getCurrentUser().getUid(), imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                profileViewModel.setUserProfilePicture(currentUser.getUid(), imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         profilePicture.setImageURI(imageUri);

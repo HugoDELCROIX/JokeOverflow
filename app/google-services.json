@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "812950264142-2jb76uuf1h0r8lmjnh6k4n3ojk4o752k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jokeoverflow",
+            "certificate_hash": "f9f5fd89cf5a9d802cf23aa7aee1283eafb030c0"
+          }
+        },
+        {
           "client_id": "812950264142-kaqcsv6af818mfdvugt22co1lrmqkobk.apps.googleusercontent.com",
           "client_type": 3
         }

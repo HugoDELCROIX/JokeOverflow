@@ -44,7 +44,7 @@ public class JokeRepository {
         return firebaseDatabase.getReference("Jokes");
     }
 
-    public com.google.firebase.database.Query nbJokesByUser(String userId) {
+    public com.google.firebase.database.Query getJokesByUser(String userId) {
         DatabaseReference databaseReference = firebaseDatabase.getReference("Jokes");
         return databaseReference.orderByChild("userId").equalTo(userId);
     }

@@ -46,8 +46,8 @@ public class ProfileViewModel extends ViewModel {
         return userRepository.setUserProfilePicture(userId, imageUri);
     }
 
-    public com.google.firebase.database.Query nbJokesByUser(String userId){
-        return jokeRepository.nbJokesByUser(userId);
+    public com.google.firebase.database.Query getJokesByUser(String userId){
+        return jokeRepository.getJokesByUser(userId);
     }
 
 }

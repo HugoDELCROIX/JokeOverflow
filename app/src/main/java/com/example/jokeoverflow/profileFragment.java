@@ -49,6 +49,7 @@ public class profileFragment extends Fragment {
     private TextView emailTextView;
     private TextView ageTextView;
     private TextView nbJokes;
+    private TextView score;
     private ImageView profilePicture;
     private Button logoutButton;
 
@@ -77,6 +78,7 @@ public class profileFragment extends Fragment {
         logoutButton = view.findViewById(R.id.logoutButton);
         nbJokes = view.findViewById(R.id.userNbJokes);
         profilePicture = view.findViewById(R.id.userProfilePicture);
+        score = view.findViewById(R.id.userScore);
     }
 
     @Override
@@ -98,12 +100,12 @@ public class profileFragment extends Fragment {
         assert navHostFragment != null;
         navController = navHostFragment.getNavController();
 
-        // Redirect user if not logged. could be static method somewhere ?
         if(currentUser == null){
             navController.navigate(R.id.loginFragment);
         } else {
 
             getUserInfo();
+            getUserScore();
 
         }
 
@@ -121,6 +123,10 @@ public class profileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void getUserScore() {
+        // Aggregation
     }
 
     private void getUserInfo() {
@@ -159,7 +165,7 @@ public class profileFragment extends Fragment {
         });
 
         // Numbers of joke made the currently connected user
-        profileViewModel.nbJokesByUser(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
+        profileViewModel.getJokesByUser(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 nbJokes.setText(String.valueOf(snapshot.getChildrenCount()));

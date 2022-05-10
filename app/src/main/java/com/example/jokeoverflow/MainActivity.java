@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        // navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         navController = getNavController();
 
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {

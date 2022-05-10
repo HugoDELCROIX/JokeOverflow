@@ -16,10 +16,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.jokeoverflow.Model.Joke;
-import com.example.jokeoverflow.ViewModel.JokesViewModel;
-import com.example.jokeoverflow.ViewModel.UserViewModel;
+import com.example.jokeoverflow.Repository.UserRepository;
+import com.example.jokeoverflow.ViewModel.AddjokeViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 
 public class addjokeFragment extends Fragment {
 
@@ -27,9 +28,9 @@ public class addjokeFragment extends Fragment {
     private EditText titleEditText;
     private EditText jokeEditText;
 
-    private JokesViewModel jokesViewModel;
+    private AddjokeViewModel addjokeViewModel;
 
-    private UserViewModel userViewModel;
+    private FirebaseUser currentUser;
 
 
     public addjokeFragment() {
@@ -52,16 +53,19 @@ public class addjokeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_addjoke, container, false);
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        userViewModel.init();
-
         initWidgets(view);
+
+        currentUser = UserRepository.getLoggedUser();
+
+        addjokeViewModel = new ViewModelProvider(this).get(AddjokeViewModel.class);
+        addjokeViewModel.init();
 
         NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment);
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
 
-        if(userViewModel.getFirebaseAuth().getCurrentUser() == null){
+
+        if(currentUser == null){
             navController.navigate(R.id.loginFragment);
         }
 
@@ -70,16 +74,14 @@ public class addjokeFragment extends Fragment {
             String jokeTitle = titleEditText.getText().toString();
             String jokeContent = jokeEditText.getText().toString();
 
-            jokesViewModel = new ViewModelProvider(this).get(JokesViewModel.class);
-            jokesViewModel.init();
+            Joke joke = new Joke(jokeTitle, "19/03/22", jokeContent, 5.0, currentUser.getUid());
 
-            Joke joke = new Joke(jokeTitle, "19/03/22", jokeContent, 5.0, userViewModel.getFirebaseAuth().getCurrentUser().getUid());
-
-            jokesViewModel.addJokeToDatabase(joke).addOnCompleteListener(new OnCompleteListener<Void>() {
+            addjokeViewModel.addJokeToDatabase(joke).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
                         Toast.makeText(view.getContext(), "Joke added", Toast.LENGTH_SHORT).show();
+                        navController.navigate(R.id.homeFragment);
                     } else {
                         Toast.makeText(view.getContext(), "Joke couldn't be added", Toast.LENGTH_SHORT).show();
                     }

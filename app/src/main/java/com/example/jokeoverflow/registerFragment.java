@@ -6,10 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jokeoverflow.Model.User;
-import com.example.jokeoverflow.ViewModel.UserViewModel;
+import com.example.jokeoverflow.ViewModel.AuthViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -35,9 +35,8 @@ public class registerFragment extends Fragment {
     private Button registerButton;
 
     private NavController navController;
-    private UserViewModel userViewModel;
 
-
+    private AuthViewModel authViewModel;
 
     public registerFragment() {
 
@@ -64,11 +63,10 @@ public class registerFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        userViewModel.init();
-
-
         initWidgets(view);
+
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        authViewModel.init();
 
         NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment);
         assert navHostFragment != null;
@@ -112,14 +110,14 @@ public class registerFragment extends Fragment {
             registerAge.requestFocus();
         }
 
-        userViewModel.createUser(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        authViewModel.createUser(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
 
                     User user = new User(userEmail, userFullname, userUsername, Integer.parseInt(userAge));
 
-                    userViewModel.addUserToDatabase(user).addOnCompleteListener(new OnCompleteListener() {
+                    authViewModel.addUserToDatabase(user).addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
 
@@ -129,12 +127,12 @@ public class registerFragment extends Fragment {
                             } else {
                                 Toast.makeText(getContext(), "User not added to database", Toast.LENGTH_SHORT).show();
                             }
-
                         }
                     });
 
                 } else {
                     Toast.makeText(getContext(), "User not registered :(", Toast.LENGTH_SHORT).show();
+                    Log.i("registerException", task.getException().toString());
                 }
             }
         });

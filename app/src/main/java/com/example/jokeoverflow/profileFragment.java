@@ -1,30 +1,47 @@
 package com.example.jokeoverflow;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.jokeoverflow.Model.User;
-import com.example.jokeoverflow.ViewModel.JokesViewModel;
-import com.example.jokeoverflow.ViewModel.UserViewModel;
+import com.example.jokeoverflow.Repository.UserRepository;
+import com.example.jokeoverflow.ViewModel.ProfileViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.UploadTask;
 
-import org.w3c.dom.Text;
-
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class profileFragment extends Fragment {
@@ -34,11 +51,18 @@ public class profileFragment extends Fragment {
     private TextView emailTextView;
     private TextView ageTextView;
     private TextView nbJokes;
+    private TextView score;
+    private ImageView profilePicture;
     private Button logoutButton;
 
+    private Uri imageUri;
+
     private NavController navController;
-    private UserViewModel userViewModel;
-    private JokesViewModel jokesViewModel;
+
+    private ProfileViewModel profileViewModel;
+
+    private FirebaseUser currentUser;
+
 
     public profileFragment() {
     }
@@ -55,6 +79,8 @@ public class profileFragment extends Fragment {
         ageTextView = view.findViewById(R.id.userAge);
         logoutButton = view.findViewById(R.id.logoutButton);
         nbJokes = view.findViewById(R.id.userNbJokes);
+        profilePicture = view.findViewById(R.id.userProfilePicture);
+        score = view.findViewById(R.id.userScore);
     }
 
     @Override
@@ -64,31 +90,36 @@ public class profileFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-
-        jokesViewModel = new ViewModelProvider(requireActivity()).get(JokesViewModel.class);
-        jokesViewModel.init();
-
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        userViewModel.init();
-
         initWidgets(view);
+
+        currentUser = UserRepository.getLoggedUser();
+
+        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+        profileViewModel.init();
+
 
         NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment);
         assert navHostFragment != null;
         navController = navHostFragment.getNavController();
 
-        // Redirect user if not logged.
-        if(userViewModel.getFirebaseAuth().getCurrentUser() == null){
+        if(currentUser == null){
             navController.navigate(R.id.loginFragment);
         } else {
 
             getUserInfo();
+            getUserScore();
 
         }
 
+        profilePicture.setOnClickListener(v -> {
+
+            selectPicture();
+
+        });
+
         logoutButton.setOnClickListener(v -> {
 
-            userViewModel.signOutUser();
+            profileViewModel.signOutUser();
             navController.navigate(R.id.homeFragment);
 
         });
@@ -96,35 +127,40 @@ public class profileFragment extends Fragment {
         return view;
     }
 
+    private void getUserScore() {
+        // Aggregation
+    }
+
     private void getUserInfo() {
         // Display data from database
-        userViewModel.retrieveUserFromDatabase().addListenerForSingleValueEvent(new ValueEventListener() {
+        LiveData<DataSnapshot> liveData = profileViewModel.retrieveUserFromDatabase(currentUser.getUid());
+
+        liveData.observe(getViewLifecycleOwner(), new Observer<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User userProfile = snapshot.getValue(User.class);
+            public void onChanged(DataSnapshot dataSnapshot) {
+                User userProfile = dataSnapshot.getValue(User.class);
+                profileViewModel.getUserProfilePicture(Objects.requireNonNull(currentUser.getUid())).addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Glide.with(requireActivity()).load(uri).into(profilePicture);
+                    }
+                });
 
-                if(userProfile != null){
-                    String fullname = userProfile.getFullName();
-                    String email = userProfile.getEmail();
-                    String username = userProfile.getUsername();
-                    int age = userProfile.getAge();
+                String fullname = userProfile.getFullName();
+                String email = userProfile.getEmail();
+                String username = userProfile.getUsername();
+                int age = userProfile.getAge();
 
-                    usernameTextView.setText(username);
-                    fullnameTextView.setText(fullname);
-                    emailTextView.setText(email);
-                    ageTextView.setText(String.valueOf(age));
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                usernameTextView.setText(username);
+                fullnameTextView.setText(fullname);
+                emailTextView.setText(email);
+                ageTextView.setText(String.valueOf(age));
             }
         });
 
+
         // Numbers of joke made the currently connected user
-        jokesViewModel.nbJokesByUser(userViewModel.getFirebaseAuth().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        profileViewModel.getJokesByUser(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 nbJokes.setText(String.valueOf(snapshot.getChildrenCount()));
@@ -136,4 +172,42 @@ public class profileFragment extends Fragment {
             }
         });
     }
+
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if(result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
+                Intent data = result.getData();
+                imageUri = data.getData();
+                profileViewModel.setUserProfilePicture(currentUser.getUid(), imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        profilePicture.setImageURI(imageUri);
+                        Toast.makeText(requireActivity(), "image uploaded", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+    });
+
+    private void selectPicture(){
+
+        /* permissions ? */
+        if(ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
+                && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+
+            ArrayList<String> permissionsToRequest = new ArrayList<>();
+            permissionsToRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+            ActivityCompat.requestPermissions(requireActivity(), permissionsToRequest.toArray(new String[0]), 0);
+
+        }
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        activityResultLauncher.launch(intent);
+    }
+
 }

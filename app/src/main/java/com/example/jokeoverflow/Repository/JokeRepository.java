@@ -5,6 +5,9 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.jokeoverflow.Model.Joke;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.Console;
 import java.util.ArrayList;
@@ -12,14 +15,15 @@ import java.util.List;
 
 public class JokeRepository {
     public static JokeRepository instance;
-    ArrayList<Joke> jokes;
 
-    public JokeRepository(){
-        this.jokes = new ArrayList<Joke>();
+    private FirebaseDatabase firebaseDatabase;
+
+    public JokeRepository() {
+        firebaseDatabase = FirebaseDatabase.getInstance("https://jokeoverflow-3db4b-default-rtdb.europe-west1.firebasedatabase.app");
     }
 
-    public static JokeRepository getInstance(){
-        if(instance == null){
+    public static JokeRepository getInstance() {
+        if (instance == null) {
             instance = new JokeRepository();
         }
 
@@ -27,17 +31,27 @@ public class JokeRepository {
     }
 
 
-    public MutableLiveData<List<Joke>> getAllJokes(){
-        MutableLiveData<List<Joke>> liveData = new MutableLiveData<>();
-        liveData.setValue(jokes);
-        return liveData;
+    public Task<Void> addJokeToDatabase(Joke joke) {
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Jokes").push();
+        String keyString = databaseReference.getKey();
+
+        joke.setKey(keyString);
+
+        return databaseReference.setValue(joke);
     }
 
-    public void deleteAllJokes(){
-        jokes.clear();
+    public DatabaseReference retrieveJokesFromDatabase() {
+        return firebaseDatabase.getReference("Jokes");
     }
 
-    public void addJoke(Joke joke){
-        jokes.add(joke);
+    public com.google.firebase.database.Query getJokesByUser(String userId) {
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Jokes");
+        return databaseReference.orderByChild("userId").equalTo(userId);
+    }
+
+    public Joke rate(Joke joke) {
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Jokes");
+        databaseReference.child(joke.getKey()).child("rating").setValue(joke.getRating());
+        return joke;
     }
 }

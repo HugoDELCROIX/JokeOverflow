@@ -14,6 +14,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -131,38 +133,31 @@ public class profileFragment extends Fragment {
 
     private void getUserInfo() {
         // Display data from database
-        profileViewModel.retrieveUserFromDatabase(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        LiveData<DataSnapshot> liveData = profileViewModel.retrieveUserFromDatabase(currentUser.getUid());
+
+        liveData.observe(getViewLifecycleOwner(), new Observer<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User userProfile = snapshot.getValue(User.class);
+            public void onChanged(DataSnapshot dataSnapshot) {
+                User userProfile = dataSnapshot.getValue(User.class);
+                profileViewModel.getUserProfilePicture(Objects.requireNonNull(currentUser.getUid())).addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Glide.with(requireActivity()).load(uri).into(profilePicture);
+                    }
+                });
 
-                if(userProfile != null){
+                String fullname = userProfile.getFullName();
+                String email = userProfile.getEmail();
+                String username = userProfile.getUsername();
+                int age = userProfile.getAge();
 
-                    profileViewModel.getUserProfilePicture(Objects.requireNonNull(currentUser.getUid())).addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Glide.with(requireActivity()).load(uri).into(profilePicture);
-                        }
-                    });
-
-                    String fullname = userProfile.getFullName();
-                    String email = userProfile.getEmail();
-                    String username = userProfile.getUsername();
-                    int age = userProfile.getAge();
-
-                    usernameTextView.setText(username);
-                    fullnameTextView.setText(fullname);
-                    emailTextView.setText(email);
-                    ageTextView.setText(String.valueOf(age));
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                usernameTextView.setText(username);
+                fullnameTextView.setText(fullname);
+                emailTextView.setText(email);
+                ageTextView.setText(String.valueOf(age));
             }
         });
+
 
         // Numbers of joke made the currently connected user
         profileViewModel.getJokesByUser(currentUser.getUid()).addValueEventListener(new ValueEventListener() {

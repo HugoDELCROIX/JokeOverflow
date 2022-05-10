@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -66,11 +68,12 @@ public class userProfileFragment extends Fragment {
     }
 
     private void getUserInformations() {
-        profileViewModel.retrieveUserFromDatabase(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
+        LiveData<DataSnapshot> liveData = profileViewModel.retrieveUserFromDatabase(userId);
 
+        liveData.observe(getViewLifecycleOwner(), new Observer<DataSnapshot>() {
+            @Override
+            public void onChanged(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
                 profileViewModel.getUserProfilePicture(userId).addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
@@ -80,12 +83,6 @@ public class userProfileFragment extends Fragment {
 
                     }
                 });
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(requireActivity(), "Couldn't retrieve requested user", Toast.LENGTH_SHORT).show();
             }
         });
     }

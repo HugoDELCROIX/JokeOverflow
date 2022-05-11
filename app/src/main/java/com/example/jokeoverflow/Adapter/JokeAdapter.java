@@ -3,6 +3,7 @@ package com.example.jokeoverflow.Adapter;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,22 +22,24 @@ import com.example.jokeoverflow.Model.Joke;
 import com.example.jokeoverflow.R;
 import com.example.jokeoverflow.Repository.JokeRepository;
 import com.example.jokeoverflow.Repository.UserRepository;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
-public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder>{
-
-    private ArrayList<Joke> jokes;
+public class JokeAdapter extends FirebaseRecyclerAdapter<Joke, JokeAdapter.ViewHolder>{
 
     private JokeRepository jokeRepository;
     private UserRepository userRepository;
+    private ArrayList<Joke> jokes;
 
 
-    public JokeAdapter(ArrayList<Joke> jokes){
-        this.jokes = jokes;
+    public JokeAdapter(Query query, FirebaseRecyclerOptions options){
+        super(options);
+        jokes = new ArrayList<Joke>();
     }
-
 
     @NonNull
     @Override
@@ -46,6 +49,7 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder>{
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.cards_home, parent, false);
 
+
         return new ViewHolder(view, new ClickListener() {
             final AppCompatActivity activity = (AppCompatActivity) view.getContext();
 
@@ -53,9 +57,7 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder>{
             final NavController navController = navHostFragment.getNavController();
 
             @Override
-            public void onPictureClick(int p) {
-                Joke joke = jokes.get(p);
-
+            public void onPictureClick(Joke joke) {
                 Bundle bundle = new Bundle();
                 bundle.putString("userId", joke.getUserId());
 
@@ -63,39 +65,42 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder>{
             }
 
             @Override
-            public void onRateUp(int p) {
-                Joke joke = jokes.get(p);
-
-                joke.setRating((double) Math.round((joke.getRating() + 0.3) * 100) / 100);
-                Joke newJoke = jokeRepository.rate(joke);
-                jokes.set(p, newJoke);
-                notifyItemChanged(p);
+            public void onRateUp(Joke joke, int position) {
+                joke.upRate();
+                jokeRepository.rate(joke);
+                notifyItemChanged(position);
             }
 
             @Override
-            public void onRateDown(int p) {
-                Joke joke = jokes.get(p);
-
-                joke.setRating((double) Math.round((joke.getRating() - 0.3) * 100) / 100);
-                Joke newJoke = jokeRepository.rate(joke);
-                jokes.set(p, newJoke);
-                notifyItemChanged(p);
+            public void onRateDown(Joke joke, int position) {
+                joke.downRate();
+                jokeRepository.rate(joke);
+                notifyItemChanged(position);
             }
         });
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Joke model) {
         userRepository = UserRepository.getInstance();
 
-        Joke currentJoke = jokes.get(position);
+        try{
+            if(jokes.get(position) == null){
+                jokes.add(model);
+            } else {
+                jokes.set(position, model);
+            }
+        } catch (IndexOutOfBoundsException e){
+            jokes.add(model);
+        }
 
-        holder.date.setText(currentJoke.getDate());
-        holder.title.setText(currentJoke.getTitle());
-        holder.content.setText(currentJoke.getContent());
+        holder.date.setText(model.getFormattedDate());
+        holder.title.setText(model.getTitle());
+        holder.content.setText(model.getContent());
 
-        userRepository.getUserProfilePicture(currentJoke.getUserId()).addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+        userRepository.getUserProfilePicture(model.getUserId()).addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(holder.itemView.getContext()).load(uri).into(holder.userPicture);
@@ -103,22 +108,21 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder>{
         });
 
 
-        if (currentJoke.getRating() > 5){
+        if (model.getFormattedRating() > 5.0){
             holder.rating.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.orange));
-        } else if (currentJoke.getRating() < 5){
+        } else if (model.getFormattedRating() < 5.0){
             holder.rating.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.blue));
+        } else {
+            holder.rating.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
         }
 
-        holder.rating.setText(Double.toString(currentJoke.getRating()));
+
+        holder.rating.setText(Double.toString(model.getFormattedRating()));
 
     }
 
-    @Override
-    public int getItemCount() {
-        return this.jokes.size();
-    }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView date;
         private final TextView title;
         private final TextView content;
@@ -150,24 +154,31 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder>{
             userPicture.setOnClickListener(this);
             upRateBtn.setOnClickListener(this);
             downRateBtn.setOnClickListener(this);
+
         }
+
 
         @Override
         public void onClick(View view) {
+            int position = this.getLayoutPosition();
 
             if(view.getId() == R.id.upRateBtn){
-                this.clickListener.onRateUp(this.getLayoutPosition());
+                this.clickListener.onRateUp(jokes.get(position), position);
             } else if (view.getId() == R.id.downRateBtn) {
-                this.clickListener.onRateDown(this.getLayoutPosition());
+                this.clickListener.onRateDown(jokes.get(position), position);
             } else if (view.getId() == R.id.userPicture){
-                this.clickListener.onPictureClick(this.getLayoutPosition());
+                this.clickListener.onPictureClick(jokes.get(position));
             }
         }
+
+
     }
 
     public interface ClickListener {
-        void onPictureClick(int p);
-        void onRateUp(int p);
-        void onRateDown(int p);
+        void onPictureClick(Joke joke);
+        void onRateUp(Joke joke, int p);
+        void onRateDown(Joke joke, int p);
     }
+
+
 }

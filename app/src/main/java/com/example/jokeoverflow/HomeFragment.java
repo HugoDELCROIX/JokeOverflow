@@ -9,14 +9,20 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.jokeoverflow.Adapter.JokeAdapter;
 import com.example.jokeoverflow.Model.Joke;
+import com.example.jokeoverflow.Repository.JokeRepository;
 import com.example.jokeoverflow.ViewModel.HomeViewModel;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.Query;
+
 
 import java.util.ArrayList;
 
@@ -27,7 +33,11 @@ public class HomeFragment extends Fragment {
 
     private ArrayList<Joke> jokes;
 
+    private double score;
+
     private HomeViewModel homeViewModel;
+
+
 
     public HomeFragment() {
 
@@ -50,23 +60,25 @@ public class HomeFragment extends Fragment {
         homeViewModel= new ViewModelProvider(this).get(HomeViewModel.class);
         homeViewModel.init();
 
-        LiveData<DataSnapshot> liveData = homeViewModel.retrieveJokesFromDatabase();
-        jokes = new ArrayList<>();
 
-        liveData.observe(getViewLifecycleOwner(), new Observer<DataSnapshot>() {
-            @Override
-            public void onChanged(DataSnapshot dataSnapshot) {
-                for(DataSnapshot jokesnap : dataSnapshot.getChildren()){
-                    Joke joke = jokesnap.getValue(Joke.class);
-                    jokes.add(joke);
-                }
+        Query query = homeViewModel.retrieveJokesFromDatabase();
+        FirebaseRecyclerOptions<Joke> options = new FirebaseRecyclerOptions.Builder<Joke>().setQuery(query, Joke.class).build();
 
-                jokeAdapter = new JokeAdapter(jokes);
-                recyclerView.setAdapter(jokeAdapter);
-            }
+        jokeAdapter = new JokeAdapter(query, options);
 
-        });
-
+        recyclerView.setAdapter(jokeAdapter);
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        jokeAdapter.stopListening();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        jokeAdapter.startListening();
     }
 }

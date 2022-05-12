@@ -170,8 +170,6 @@ public class JokeAdapter extends FirebaseRecyclerAdapter<Joke, JokeAdapter.ViewH
                 this.clickListener.onPictureClick(jokes.get(position));
             }
         }
-
-
     }
 
     public interface ClickListener {
@@ -179,6 +177,5 @@ public class JokeAdapter extends FirebaseRecyclerAdapter<Joke, JokeAdapter.ViewH
         void onRateUp(Joke joke, int p);
         void onRateDown(Joke joke, int p);
     }
-
 
 }

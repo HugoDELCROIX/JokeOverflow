@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -17,12 +19,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.jokeoverflow.Model.Joke;
+import com.example.jokeoverflow.Model.User;
 import com.example.jokeoverflow.Repository.UserRepository;
 import com.example.jokeoverflow.ViewModel.AddjokeViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 
 public class addjokeFragment extends Fragment {
 
@@ -88,6 +94,17 @@ public class addjokeFragment extends Fragment {
                     } else {
                         Toast.makeText(view.getContext(), "Joke couldn't be added", Toast.LENGTH_SHORT).show();
                     }
+                }
+            });
+
+            LiveData<DataSnapshot> liveData = addjokeViewModel.retrieveUserFromDatabase(currentUser.getUid());
+
+            liveData.observe(getViewLifecycleOwner(), new Observer<DataSnapshot>() {
+                @Override
+                public void onChanged(DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    user.upScore(1);
+                    addjokeViewModel.addScoreToUser(user, currentUser.getUid());
                 }
             });
 

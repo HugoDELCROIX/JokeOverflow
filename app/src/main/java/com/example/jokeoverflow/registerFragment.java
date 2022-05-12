@@ -115,7 +115,7 @@ public class registerFragment extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
 
-                    User user = new User(userEmail, userFullname, userUsername, Integer.parseInt(userAge));
+                    User user = new User(userEmail, userFullname, userUsername, 0, Integer.parseInt(userAge));
 
                     authViewModel.addUserToDatabase(user).addOnCompleteListener(new OnCompleteListener() {
                         @Override

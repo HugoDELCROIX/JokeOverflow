@@ -2,6 +2,7 @@ package com.example.jokeoverflow.Repository;
 
 import android.net.Uri;
 
+import com.example.jokeoverflow.Model.Joke;
 import com.example.jokeoverflow.Model.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -9,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -72,8 +74,16 @@ public class UserRepository {
         return firebaseDatabase.getReference("Users").child(userId);
     }
 
+    public DatabaseReference retrieveUsersFromDatabase(){
+        return firebaseDatabase.getReference("Users");
+    }
+
     public void signOutUser(){
         firebaseAuth.signOut();
     }
 
+    public void editScore(User user, String userId) {
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
+        databaseReference.child(userId).child("score").setValue(user.getScore());
+    }
 }

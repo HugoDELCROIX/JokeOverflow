@@ -21,6 +21,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/secondary_text"
                 android:text="Email"/>
 
             <EditText
@@ -28,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                style="@style/input"
                 android:inputType="textEmailAddress" />
 
         </LinearLayout>
@@ -41,11 +43,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/secondary_text"
                 android:text="password"/>
 
             <EditText
                 android:id="@+id/loginPassword"
                 android:layout_width="match_parent"
+                style="@style/input"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
 
@@ -53,12 +57,14 @@
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/button"
                 android:text="Login!" />
 
             <TextView
                 android:id="@+id/loginToRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/secondary_text"
                 android:text="Register here!" />
 
         </LinearLayout>

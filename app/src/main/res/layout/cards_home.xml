@@ -25,6 +25,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:paddingHorizontal="10dp"
+            style="@style/card"
             android:paddingVertical="5dp">
 
             <LinearLayout
@@ -38,6 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
+                    style="@style/secondary_text"
                     android:text="2 hours ago"
                     android:textSize="10sp"/>
 
@@ -46,6 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
+                    style="@style/primary_text"
                     android:text="Joke title"
                     android:textSize="18sp" />
 
@@ -54,6 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
+                    style="@style/primary_text"
                     android:text="This is a longer text just to see the effectiveness of a joke that can be posted right here as a super cool joke you know."
                     android:textSize="12sp"/>
 

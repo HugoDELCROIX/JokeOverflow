@@ -5,13 +5,14 @@ public class User {
     private String email;
     private String fullName;
     private String username;
+    private int score;
     private int age;
 
     public User(){
 
     }
 
-    public User(String email, String fullName, String username, int age){
+    public User(String email, String fullName, String username, int score, int age){
         this.email = email;
         this.fullName = fullName;
         this.username = username;
@@ -30,6 +31,10 @@ public class User {
         return username;
     }
 
+    public int getScore() {
+        return score;
+    }
+
     public int getAge() {
         return age;
     }
@@ -46,7 +51,25 @@ public class User {
         this.username = username;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public void setAge(int age) {
         this.age = age;
+    }
+
+    // Methods
+
+    public void upScore(int toAdd){
+        this.score -= toAdd;
+    }
+
+    public void downScore(int toDown){
+        this.score += toDown;
+    }
+
+    public int getFormattedScore(){
+        return -this.score;
     }
 }

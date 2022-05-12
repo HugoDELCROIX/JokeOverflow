@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.example.jokeoverflow.ViewModel.AddjokeViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ServerValue;
 
 public class addjokeFragment extends Fragment {
 
@@ -74,7 +76,8 @@ public class addjokeFragment extends Fragment {
             String jokeTitle = titleEditText.getText().toString();
             String jokeContent = jokeEditText.getText().toString();
 
-            Joke joke = new Joke(jokeTitle, "19/03/22", jokeContent, 5.0, currentUser.getUid());
+
+            Joke joke = new Joke(jokeTitle, System.currentTimeMillis(), jokeContent, 5.0, currentUser.getUid());
 
             addjokeViewModel.addJokeToDatabase(joke).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override

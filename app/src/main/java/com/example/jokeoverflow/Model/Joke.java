@@ -1,10 +1,16 @@
 package com.example.jokeoverflow.Model;
 
+import android.annotation.SuppressLint;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Map;
+
 public class Joke {
 
     private String key;
     private String title;
-    private String date;
+    private long date;
     private String content;
     private double rating;
     private String userId;
@@ -13,17 +19,17 @@ public class Joke {
 
     }
 
-    public Joke(String title, String date, String content, double rating, String userId){
+    public Joke(String title, long date, String content, double rating, String userId){
         this.title = title;
-        this.date = date;
+        this.date = -date;
         this.content = content;
-        this.rating = rating;
+        this.rating = -rating;
         this.userId = userId;
     }
 
-    public Joke(String title, String date, String content, String userId){
+    public Joke(String title, long date, String content, String userId){
         this.title = title;
-        this.date = date;
+        this.date = -date;
         this.content = content;
         this.userId = userId;
     }
@@ -40,7 +46,7 @@ public class Joke {
         return this.title;
     }
 
-    public String getDate() {
+    public long getDate() {
         return this.date;
     }
 
@@ -67,7 +73,7 @@ public class Joke {
         this.title = title;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -81,6 +87,30 @@ public class Joke {
 
     public void setUserId(String userId){
         this.userId = userId;
+    }
+
+    // Methods
+
+    // Method to get the formatted date as we store negative timestamp in order to be able to order posts by date because firebase only order by ascending
+    public String getFormattedDate() {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(-date);
+        return formatter.format(calendar.getTime());
+    }
+
+    public double getFormattedRating(){
+        return -this.rating;
+    }
+
+    // Addition and substraction are inverted as jokes are stored with negative number to display them with right order in bestjoke fragment
+    public void upRate(){
+        this.rating = (double) Math.round((this.rating - 0.3) * 100) / 100;
+    }
+
+    public void downRate(){
+        this.rating = (double) Math.round((this.rating + 0.3) * 100) / 100;
     }
 
 }

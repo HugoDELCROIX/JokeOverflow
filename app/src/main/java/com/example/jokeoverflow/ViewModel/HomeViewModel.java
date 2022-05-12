@@ -11,6 +11,7 @@ import com.example.jokeoverflow.Repository.JokeRepository;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -18,8 +19,6 @@ import java.util.ArrayList;
 public class HomeViewModel extends ViewModel {
 
     private JokeRepository jokeRepository;
-    private LiveData<DataSnapshot> liveData;
-
 
     public HomeViewModel(){
     }
@@ -28,9 +27,8 @@ public class HomeViewModel extends ViewModel {
         jokeRepository = JokeRepository.getInstance();
     }
 
-    public LiveData<DataSnapshot> retrieveJokesFromDatabase(){
-        liveData = new FirebaseQueryLiveData(jokeRepository.retrieveJokesFromDatabase());
-        return liveData;
+    public Query retrieveJokesFromDatabase(){
+        return jokeRepository.retrieveJokesFromDatabase().orderByChild("date");
     }
 
 }

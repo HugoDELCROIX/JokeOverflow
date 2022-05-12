@@ -1,17 +1,10 @@
 package com.example.jokeoverflow.Repository;
 
-import android.util.Log;
-
-import androidx.lifecycle.MutableLiveData;
-
 import com.example.jokeoverflow.Model.Joke;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.io.Console;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.database.Query;
 
 public class JokeRepository {
     public static JokeRepository instance;
@@ -40,7 +33,7 @@ public class JokeRepository {
         return databaseReference.setValue(joke);
     }
 
-    public DatabaseReference retrieveJokesFromDatabase() {
+    public Query retrieveJokesFromDatabase() {
         return firebaseDatabase.getReference("Jokes");
     }
 

@@ -104,17 +104,10 @@ public class profileFragment extends Fragment {
 
         initWidgets(view);
 
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://v2.jokeapi.dev/joke/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ApiCall apiCall = retrofit.create(ApiCall.class);
-
         getData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ApiCall apiCall = profileViewModel.getApiCall();
                 Call<ApiJoke> call = apiCall.getAllData();
 
                 call.enqueue(new Callback<ApiJoke>() {

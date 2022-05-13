@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     tools:context=".profileFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -11,8 +13,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginVertical="50dp"
         android:orientation="vertical"
-        android:layout_marginVertical="50dp">
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="50dp">
 
         <ImageView
             android:id="@+id/userProfilePicture"
@@ -27,27 +31,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="15dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginVertical="10dp">
+            android:layout_marginVertical="10dp"
+            android:orientation="horizontal">
 
 
             <TextView
                 android:id="@+id/userUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="10dp" />
 
             <TextView
                 android:id="@+id/userAge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp" />
 
         </LinearLayout>
 
@@ -61,22 +65,40 @@
             android:id="@+id/userNbJokes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/userScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
 
         <Button
             android:id="@+id/logoutButton"
+            style="@style/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Logout!"
-            style="@style/button"
             android:layout_gravity="center"
-            android:layout_marginVertical="30dp" />
+            android:layout_marginVertical="30dp"
+            android:text="Logout!" />
+
+        <Button
+            android:id="@+id/getData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Get some inspiration !" />
+
+        <TextView
+            android:id="@+id/Result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="#00FFFFFF"
+            android:paddingLeft="10px"
+            android:paddingRight="10px"
+            android:textColor="#848484"
+            android:textSize="20sp" />
 
     </LinearLayout>
 

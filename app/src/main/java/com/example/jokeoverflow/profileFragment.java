@@ -44,6 +44,14 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import com.example.jokeoverflow.Model.ApiJoke;
+
 public class profileFragment extends Fragment {
 
     private TextView usernameTextView;
@@ -63,6 +71,8 @@ public class profileFragment extends Fragment {
 
     private FirebaseUser currentUser;
 
+    private TextView Result;
+    private Button getData;
 
     public profileFragment() {
     }
@@ -81,6 +91,8 @@ public class profileFragment extends Fragment {
         nbJokes = view.findViewById(R.id.userNbJokes);
         profilePicture = view.findViewById(R.id.userProfilePicture);
         score = view.findViewById(R.id.userScore);
+        Result = view.findViewById(R.id.Result);
+        getData = view.findViewById(R.id.getData);
     }
 
     @Override
@@ -91,6 +103,35 @@ public class profileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         initWidgets(view);
+
+        getData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ApiCall apiCall = profileViewModel.getApiCall();
+                Call<ApiJoke> call = apiCall.getAllData();
+
+                call.enqueue(new Callback<ApiJoke>() {
+                    @Override
+                    public void onResponse(Call<ApiJoke> call, Response<ApiJoke> response) {
+                        if (response.code() != 200) {
+                            Result.setText("Connection isn't working...");
+                            return;
+                        }
+
+                        String answer = "";
+                        answer = response.body().getJoke();
+                        Result.setText(answer);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ApiJoke> call, Throwable t) {
+                        Result.setText(t.getMessage());
+                    }
+                });
+
+            }
+        });
+
 
         currentUser = UserRepository.getLoggedUser();
 

@@ -5,6 +5,7 @@ import android.net.Uri;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.jokeoverflow.ApiCall;
 import com.example.jokeoverflow.FirebaseQueryLiveData;
 import com.example.jokeoverflow.Model.User;
 import com.example.jokeoverflow.Repository.JokeRepository;
@@ -53,6 +54,10 @@ public class ProfileViewModel extends ViewModel {
 
     public com.google.firebase.database.Query getJokesByUser(String userId){
         return jokeRepository.getJokesByUser(userId);
+    }
+
+    public ApiCall getApiCall() {
+        return jokeRepository.getRetrofit();
     }
 
 }

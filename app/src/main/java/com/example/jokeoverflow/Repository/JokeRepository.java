@@ -1,10 +1,14 @@
 package com.example.jokeoverflow.Repository;
 
+import com.example.jokeoverflow.ApiCall;
 import com.example.jokeoverflow.Model.Joke;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class JokeRepository {
     public static JokeRepository instance;
@@ -46,5 +50,15 @@ public class JokeRepository {
         DatabaseReference databaseReference = firebaseDatabase.getReference("Jokes");
         databaseReference.child(joke.getKey()).child("rating").setValue(joke.getRating());
         return joke;
+    }
+
+    public ApiCall getRetrofit() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://v2.jokeapi.dev/joke/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ApiCall apiCall = retrofit.create(ApiCall.class);
+        return apiCall;
     }
 }

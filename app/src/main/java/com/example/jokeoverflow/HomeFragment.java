@@ -3,24 +3,18 @@ package com.example.jokeoverflow;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.jokeoverflow.Adapter.JokeAdapter;
 import com.example.jokeoverflow.Model.Joke;
-import com.example.jokeoverflow.Repository.JokeRepository;
 import com.example.jokeoverflow.ViewModel.HomeViewModel;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.Query;
 
 
@@ -64,7 +58,7 @@ public class HomeFragment extends Fragment {
         Query query = homeViewModel.retrieveJokesFromDatabase();
         FirebaseRecyclerOptions<Joke> options = new FirebaseRecyclerOptions.Builder<Joke>().setQuery(query, Joke.class).build();
 
-        jokeAdapter = new JokeAdapter(query, options);
+        jokeAdapter = new JokeAdapter(options);
 
         recyclerView.setAdapter(jokeAdapter);
         return view;

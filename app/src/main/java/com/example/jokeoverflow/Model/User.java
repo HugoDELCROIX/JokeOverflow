@@ -69,7 +69,7 @@ public class User {
         this.score += toDown;
     }
 
-    public int getFormattedScore(){
+    public int formattedScore(){
         return -this.score;
     }
 }

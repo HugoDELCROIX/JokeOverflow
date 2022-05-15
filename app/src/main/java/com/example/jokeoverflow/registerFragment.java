@@ -94,47 +94,50 @@ public class registerFragment extends Fragment {
         String userAge = registerAge.getText().toString();
 
         if(TextUtils.isEmpty(userEmail)){
-            registerEmail.setError("Email cannot be empty");
+            registerEmail.setError(getText(R.string.registerEmptyEmail));
             registerEmail.requestFocus();
         } else if(TextUtils.isEmpty(userPassword)){
-            registerPassword.setError("Password cannot be empty");
+            registerPassword.setError(getText(R.string.registerEmptyPassword));
             registerPassword.requestFocus();
         } else if (TextUtils.isEmpty(userFullname)){
-            registerFullname.setError("You must enter a full name");
+            registerFullname.setError(getText(R.string.registerEmptyFullname));
             registerFullname.requestFocus();
         } else if (TextUtils.isEmpty(userUsername)){
-            registerUsername.setError("You must enter valid username");
+            registerUsername.setError(getText(R.string.registerEmptyUsername));
             registerUsername.requestFocus();
         } else if (TextUtils.isEmpty(userAge)){
-            registerAge.setError("You must enter your age");
+            registerAge.setError(getText(R.string.registerEmptyAge));
             registerAge.requestFocus();
+        } else {
+
+            authViewModel.createUser(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+
+                        User user = new User(userEmail, userFullname, userUsername, 0, Integer.parseInt(userAge));
+
+                        authViewModel.addUserToDatabase(user).addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+
+                                if(task.isSuccessful()){
+                                    Toast.makeText(getContext(), getText(R.string.registerSuccess), Toast.LENGTH_SHORT).show();
+                                    navController.navigate(R.id.loginFragment);
+                                } else {
+                                    Toast.makeText(getContext(), getText(R.string.registerUserDatabaseError), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                    } else {
+                        Toast.makeText(getContext(), getText(R.string.registerUserError), Toast.LENGTH_SHORT).show();
+                        Log.i("registerException", task.getException().toString());
+                    }
+                }
+            });
+
         }
 
-        authViewModel.createUser(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-
-                    User user = new User(userEmail, userFullname, userUsername, 0, Integer.parseInt(userAge));
-
-                    authViewModel.addUserToDatabase(user).addOnCompleteListener(new OnCompleteListener() {
-                        @Override
-                        public void onComplete(@NonNull Task task) {
-
-                            if(task.isSuccessful()){
-                                Toast.makeText(getContext(), "User registered", Toast.LENGTH_SHORT).show();
-                                navController.navigate(R.id.loginFragment);
-                            } else {
-                                Toast.makeText(getContext(), "User not added to database", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
-                } else {
-                    Toast.makeText(getContext(), "User not registered :(", Toast.LENGTH_SHORT).show();
-                    Log.i("registerException", task.getException().toString());
-                }
-            }
-        });
     }
 }

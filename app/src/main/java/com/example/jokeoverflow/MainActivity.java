@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        if(id == R.id.mybutton){
+        if(id == R.id.myProfileButton){
             getNavController().navigate(R.id.profileFragment);
         }
 

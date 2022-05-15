@@ -16,7 +16,7 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add a super joke"
+            android:text="@string/addJokesTitle"
             style="@style/primary_text"
             android:layout_gravity="center"
             android:textSize="26sp" />
@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Title:"
+                android:text="@string/addJokesJokeTitle"
                 style="@style/secondary_text"/>
 
             <EditText
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 style="@style/input"
-                android:hint="The title" />
+                android:hint="@string/addJokesJokeTitleHint" />
 
         </LinearLayout>
 
@@ -53,7 +53,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="The joke:"
+                android:text="@string/addJokesJokeContent"
                 style="@style/secondary_text" />
 
             <EditText
@@ -63,7 +63,15 @@
                 android:inputType="textMultiLine"
                 android:maxLength="200"
                 style="@style/input"
-                android:hint="The joke"/>
+                android:hint="@string/addJokesJokeContentHint"/>
+
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:spinnerMode="dropdown"
+                android:entries="@array/spinnerItems"/>
 
         </LinearLayout>
 
@@ -71,7 +79,7 @@
             android:id="@+id/addJokeBtn"
             android:layout_width="150dp"
             android:layout_height="45dp"
-            android:text="Submit"
+            android:text="@string/addJokesSubmitButton"
             style="@style/button"
             android:layout_gravity="center"
             android:layout_marginVertical="20dp"/>

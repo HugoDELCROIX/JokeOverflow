@@ -33,6 +33,7 @@ import com.example.jokeoverflow.Model.User;
 import com.example.jokeoverflow.Repository.UserRepository;
 import com.example.jokeoverflow.ViewModel.ProfileViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,8 +48,6 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import com.example.jokeoverflow.Model.ApiJoke;
 
@@ -114,7 +113,7 @@ public class profileFragment extends Fragment {
                     @Override
                     public void onResponse(Call<ApiJoke> call, Response<ApiJoke> response) {
                         if (response.code() != 200) {
-                            Result.setText("Connection isn't working...");
+                            Result.setText(getText(R.string.profileApiNoConnection));
                             return;
                         }
 
@@ -185,6 +184,11 @@ public class profileFragment extends Fragment {
                     public void onSuccess(Uri uri) {
                         Glide.with(requireActivity()).load(uri).into(profilePicture);
                     }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Glide.with(requireActivity()).load(R.drawable.resource_default).into(profilePicture);
+                    }
                 });
 
                 String fullname = userProfile.getFullName();
@@ -209,7 +213,7 @@ public class profileFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(requireActivity(), "Couldn't get number of posts", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireActivity(), getText(R.string.profileErrorNbPosts), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -224,7 +228,7 @@ public class profileFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         profilePicture.setImageURI(imageUri);
-                        Toast.makeText(requireActivity(), "image uploaded", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireActivity(), getText(R.string.profileImageUploaded), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

@@ -38,3 +38,36 @@ The users can find specific jokes by filtering by tag (keyword).
 ## IV. User overview
 
 ![](https://cdn.discordapp.com/attachments/667443778478407680/955113753270157373/unknown.png)
+
+## V. Achievements
+
+#### A. Successes
+##### a. Pages
+Our application is functional and has many features :
+
+- A Home page showing displaying all the jokes posted by the users.
+- A Leaderboard page displaying all the users by their score (number of jokes posted).
+- A "Best Jokes" page displaying all jokes in descending order of their score.
+- A Profile page displaying all the informations of the user : profile picture, his fullname and username, age, mail address and score. There are also two buttons : Logout and "Get some inspirations" showing a random joke by clicking the button. 
+- A "Add a Joke" page allowing the user to enter his joke.
+- A Login/Register page allowing the user to connect or create an account.
+
+##### b. Cards
+The joke's cards are designed in a way so the user can see the profile picture of the writter, the date of posting, the joke and the marking system. By clicking on the "flame" or the "snow flask", you can increase or decrease the score of the joke.
+
+##### c. Languages
+This app is allowed in Danish, English and French.
+
+##### d. Style
+There are two themes : Day and Night.
+
+- Day : white as main color and blue as secondary.
+- Night : black as main color and yellow as secondary.
+#### B. Difficulties
+
+We had difficulties on few points :
+
+- A user can vote as much as he wants to rate a joke. He can decide the score of a joke and can increase without limit the score of his own joke
+- On the home page, the last joke in the list is not displayed correctly.
+- The search page does not work. We preferred to focus on other features instead of this one. A good way to do it would be to let the user choose tags when adding a joke so other users could find it by searching the same tags.
+- Difficulties to round profile pictures.

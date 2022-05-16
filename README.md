@@ -49,8 +49,9 @@ Our application is functional and has many features :
 - A Leaderboard page displaying all the users by their score (number of jokes posted).
 - A "Best Jokes" page displaying all jokes in descending order of their score.
 - A Profile page displaying all the informations of the user : profile picture, his fullname and username, age, mail address and score. There are also two buttons : Logout and "Get some inspirations" showing a random joke by clicking the button. 
-- A "Add a Joke" page allowing the user to enter his joke.
+- A "Add a Joke" page allowing the user to enter his joke and its category.
 - A Login/Register page allowing the user to connect or create an account.
+- A Search page allowing the user to search a joke by its category.
 
 ##### b. Cards
 The joke's cards are designed in a way so the user can see the profile picture of the writter, the date of posting, the joke and the marking system. By clicking on the "flame" or the "snow flask", you can increase or decrease the score of the joke.
@@ -69,5 +70,4 @@ We had difficulties on few points :
 
 - A user can vote as much as he wants to rate a joke. He can decide the score of a joke and can increase without limit the score of his own joke
 - On the home page, the last joke in the list is not displayed correctly.
-- The search page does not work. We preferred to focus on other features instead of this one. A good way to do it would be to let the user choose tags when adding a joke so other users could find it by searching the same tags.
 - Difficulties to round profile pictures.

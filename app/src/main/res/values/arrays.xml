@@ -1,8 +1,10 @@
 <resources>
     <string-array name="spinnerItems">
-        <item>@string/categoryItemAll</item>
-        <item>@string/categoryItemFun</item>
-        <item>@string/categoryItemBook</item>
-        <item>@string/categoryItemHumor</item>
+        <item>@string/categoryItemGeek</item>
+        <item>@string/categoryItemDad</item>
+        <item>@string/categoryItemSport</item>
+        <item>@string/categoryItemCar</item>
+        <item>@string/categoryItemGym</item>
+        <item>@string/categoryItemFood</item>
     </string-array>
 </resources>

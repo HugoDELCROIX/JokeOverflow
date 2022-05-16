@@ -57,7 +57,7 @@ Our application is functional and has many features :
 The joke's cards are designed in a way so the user can see the profile picture of the writter, the date of posting, the joke and the marking system. By clicking on the "flame" or the "snow flask", you can increase or decrease the score of the joke.
 
 ##### c. Languages
-This app is allowed in Danish, English and French.
+This app is allowed in English and French.
 
 ##### d. Style
 There are two themes : Day and Night.

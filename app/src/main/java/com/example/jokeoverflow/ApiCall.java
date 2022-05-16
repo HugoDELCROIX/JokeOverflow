@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface ApiCall {
-    @GET("Any?blacklistFlags=nsfw,racist,sexist,explicit&type=single")
+    String english = "Any?blacklistFlags=nsfw,racist,sexist,explicit&type=single";
+    @GET(english)
     Call<ApiJoke> getAllData();
 }

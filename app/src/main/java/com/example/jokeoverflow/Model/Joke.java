@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Map;
 
 public class Joke {
 
@@ -12,6 +11,7 @@ public class Joke {
     private String title;
     private long date;
     private String content;
+    private String category;
     private double rating;
     private String userId;
 
@@ -19,18 +19,20 @@ public class Joke {
 
     }
 
-    public Joke(String title, long date, String content, double rating, String userId){
+    public Joke(String title, long date, String content, String category, double rating, String userId){
         this.title = title;
         this.date = -date;
         this.content = content;
+        this.category = category;
         this.rating = -rating;
         this.userId = userId;
     }
 
-    public Joke(String title, long date, String content, String userId){
+    public Joke(String title, long date, String content, String category, String userId){
         this.title = title;
         this.date = -date;
         this.content = content;
+        this.category = category;
         this.userId = userId;
     }
 
@@ -52,6 +54,10 @@ public class Joke {
 
     public String getContent() {
         return this.content;
+    }
+
+    public String getCategory() {
+        return this.category;
     }
 
     public double getRating() {
@@ -81,6 +87,10 @@ public class Joke {
         this.content = content;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public void setRating(double rating){
         this.rating = rating;
     }
@@ -92,7 +102,7 @@ public class Joke {
     // Methods
 
     // Method to get the formatted date as we store negative timestamp in order to be able to order posts by date because firebase only order by ascending
-    public String getFormattedDate() {
+    public String formattedDate() {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
         Calendar calendar = Calendar.getInstance();
@@ -100,7 +110,7 @@ public class Joke {
         return formatter.format(calendar.getTime());
     }
 
-    public double getFormattedRating(){
+    public double formattedRating(){
         return -this.rating;
     }
 

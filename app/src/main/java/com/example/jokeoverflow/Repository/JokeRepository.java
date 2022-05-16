@@ -5,7 +5,6 @@ import com.example.jokeoverflow.Model.Joke;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -37,7 +36,7 @@ public class JokeRepository {
         return databaseReference.setValue(joke);
     }
 
-    public Query retrieveJokesFromDatabase() {
+    public DatabaseReference retrieveJokesFromDatabase() {
         return firebaseDatabase.getReference("Jokes");
     }
 

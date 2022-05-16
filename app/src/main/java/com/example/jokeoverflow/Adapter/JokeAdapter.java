@@ -3,7 +3,6 @@ package com.example.jokeoverflow.Adapter;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,19 +23,18 @@ import com.example.jokeoverflow.Repository.JokeRepository;
 import com.example.jokeoverflow.Repository.UserRepository;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
 public class JokeAdapter extends FirebaseRecyclerAdapter<Joke, JokeAdapter.ViewHolder>{
 
     private JokeRepository jokeRepository;
-    private UserRepository userRepository;
     private ArrayList<Joke> jokes;
 
 
-    public JokeAdapter(Query query, FirebaseRecyclerOptions options){
+    public JokeAdapter(FirebaseRecyclerOptions options){
         super(options);
         jokes = new ArrayList<Joke>();
     }
@@ -83,7 +81,7 @@ public class JokeAdapter extends FirebaseRecyclerAdapter<Joke, JokeAdapter.ViewH
     @SuppressLint("SetTextI18n")
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Joke model) {
-        userRepository = UserRepository.getInstance();
+        UserRepository userRepository = UserRepository.getInstance();
 
         try{
             if(jokes.get(position) == null){
@@ -95,7 +93,7 @@ public class JokeAdapter extends FirebaseRecyclerAdapter<Joke, JokeAdapter.ViewH
             jokes.add(model);
         }
 
-        holder.date.setText(model.getFormattedDate());
+        holder.date.setText(model.formattedDate());
         holder.title.setText(model.getTitle());
         holder.content.setText(model.getContent());
 
@@ -105,19 +103,24 @@ public class JokeAdapter extends FirebaseRecyclerAdapter<Joke, JokeAdapter.ViewH
             public void onSuccess(Uri uri) {
                 Glide.with(holder.itemView.getContext()).load(uri).into(holder.userPicture);
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Glide.with(holder.itemView.getContext()).load(R.drawable.resource_default).into(holder.userPicture);
+            }
         });
 
 
-        if (model.getFormattedRating() > 5.0){
+        if (model.formattedRating() > 5.0){
             holder.rating.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.orange));
-        } else if (model.getFormattedRating() < 5.0){
+        } else if (model.formattedRating() < 5.0){
             holder.rating.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.blue));
         } else {
             holder.rating.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
         }
 
 
-        holder.rating.setText(Double.toString(model.getFormattedRating()));
+        holder.rating.setText(Double.toString(model.formattedRating()));
 
     }
 

@@ -14,15 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.jokeoverflow.Model.User;
 import com.example.jokeoverflow.ViewModel.ProfileViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 public class userProfileFragment extends Fragment {
 
@@ -61,13 +59,13 @@ public class userProfileFragment extends Fragment {
         profileViewModel.init();
 
 
-        getUserInformations();
+        getUserInformation();
 
 
         return view;
     }
 
-    private void getUserInformations() {
+    private void getUserInformation() {
         LiveData<DataSnapshot> liveData = profileViewModel.retrieveUserFromDatabase(userId);
 
         liveData.observe(getViewLifecycleOwner(), new Observer<DataSnapshot>() {
@@ -77,12 +75,16 @@ public class userProfileFragment extends Fragment {
                 profileViewModel.getUserProfilePicture(userId).addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-
                         Glide.with(requireActivity()).load(uri).into(profilePicture);
-                        username.setText(user.getUsername());
-
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Glide.with(requireActivity()).load(R.drawable.resource_default).into(profilePicture);
                     }
                 });
+
+                username.setText(user.getUsername());
             }
         });
     }

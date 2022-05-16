@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email"
+                android:text="@string/registerEmailTitle"
                 style="@style/secondary_text"/>
 
             <EditText
@@ -43,7 +43,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Username:"
+                android:text="@string/registerUsernameTitle"
                 style="@style/secondary_text"/>
 
             <EditText
@@ -51,8 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                style="@style/input"
-                android:hint="Username" />
+                style="@style/input"/>
 
         </LinearLayout>
 
@@ -65,7 +64,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Full name:"
+                android:text="@string/registerFullnameTitle"
                 style="@style/secondary_text"/>
 
             <EditText
@@ -73,8 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                style="@style/input"
-                android:hint="Full name" />
+                style="@style/input" />
 
         </LinearLayout>
 
@@ -87,7 +85,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="password"
+                android:text="@string/registerPasswordTitle"
                 style="@style/secondary_text"/>
 
             <EditText
@@ -108,7 +106,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Your age:"
+                android:text="@string/registerAgeTitle"
                 style="@style/secondary_text"/>
 
             <EditText
@@ -116,8 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                style="@style/input"
-                android:hint="18"/>
+                style="@style/input" />
 
         </LinearLayout>
 
@@ -131,14 +128,14 @@
                 android:id="@+id/registerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Register!"
+                android:text="@string/registerButton"
                 style="@style/button"/>
 
             <TextView
                 android:id="@+id/registerToLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login here!"
+                android:text="@string/registerLinkLogin"
                 style="@style/secondary_text"/>
 
         </LinearLayout>

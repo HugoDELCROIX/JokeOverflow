@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/secondary_text"
-                android:text="Email"/>
+                android:text="@string/loginEmailTitle"/>
 
             <EditText
                 android:id="@+id/loginEmail"
@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/secondary_text"
-                android:text="password"/>
+                android:text="@string/loginPasswordTitle"/>
 
             <EditText
                 android:id="@+id/loginPassword"
@@ -58,14 +58,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/button"
-                android:text="Login!" />
+                android:text="@string/loginButton" />
 
             <TextView
                 android:id="@+id/loginToRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/secondary_text"
-                android:text="Register here!" />
+                android:text="@string/loginLinkRegister" />
 
         </LinearLayout>
 

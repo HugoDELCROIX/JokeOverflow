@@ -1,11 +1,14 @@
 package com.example.jokeoverflow.ViewModel;
 
+import android.net.Uri;
+
 import androidx.lifecycle.ViewModel;
 
 import com.example.jokeoverflow.Model.User;
 import com.example.jokeoverflow.Repository.UserRepository;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.storage.UploadTask;
 
 public class AuthViewModel extends ViewModel {
 

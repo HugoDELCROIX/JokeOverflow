@@ -15,21 +15,7 @@
 
     <string name="fab_contentDescription">Add a joke</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <!-- Preference Titles -->
-    <string name="messages_header" translatable="false">Messages</string>
-    <string name="sync_header" translatable="false">Sync</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title" translatable="false">Your signature</string>
-    <string name="reply_title" translatable="false">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="theme_change" translatable="false">Theme</string>
-    <string name="attachment_title" translatable="false">Download incoming attachments</string>
-    <string name="attachment_summary_on" translatable="false">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off" translatable="false">Only download attachments when manually requested</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -39,5 +25,55 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="defaultDate" translatable="false">01/01/1970</string>
+    <string name="defaultJokeTitle" >Joke title</string>
+    <string name="defaultJokeContent" >Default content of a joke</string>
+    <string name="defaultUserIndex" translatable="false">1</string>
+    <string name="defaultUserUsername" >Username</string>
+    <string name="defaultUserScore" translatable="false">3</string>
+    <string name="addJokesTitle" >Add a joke!</string>
+    <string name="addJokesJokeTitle" >Title</string>
+    <string name="addJokesJokeTitleHint" >Title of your joke</string>
+    <string name="addJokesJokeContent" >Content</string>
+    <string name="addJokesJokeContentHint" >Content of your joke…</string>
+    <string name="addJokesSubmitButton" >Send!</string>
+    <string name="loginEmailTitle" >Your email:</string>
+    <string name="loginPasswordTitle" >Your password:</string>
+    <string name="loginButton" >Log in!</string>
+    <string name="loginLinkRegister" >Register here!</string>
+    <string name="profileLogoutButton" >Logout!</string>
+    <string name="profileInspirationButton" >Inspire me!</string>
+    <string name="registerEmailTitle" >Your email:</string>
+    <string name="registerUsernameTitle" >Your username:</string>
+    <string name="registerFullnameTitle" >Your fullname:</string>
+    <string name="registerPasswordTitle" >Your password:</string>
+    <string name="registerAgeTitle" >Your age:</string>
+    <string name="registerButton" >Sign up!</string>
+    <string name="registerLinkLogin" >Login here!</string>
+    <string name="searchSearchButton" >Search…</string>
+    <string name="menuProfile" >My Profile</string>
+    <string name="toastJokeAdded" >Joke added!</string>
+    <string name="toastJokeAddError" >Error when adding joke!</string>
+    <string name="categoryItemAll" translatable="false">All</string>
+    <string name="categoryItemFun" translatable="false">Fun</string>
+    <string name="categoryItemBook" translatable="false">Book</string>
+    <string name="categoryItemHumor" translatable="false">Humor</string>
+    <string name="loginErrorEmptyEmail" >Email cannot be empty</string>
+    <string name="loginErrorEmptyPassword" >Password cannot be empty</string>
+    <string name="loginErrorLogin" >Couldn\'t login user!</string>
+    <string name="loginSuccessfulLogin" >Successfully logged!</string>
+    <string name="profileApiNoConnection" >Couldn\'t connect to API</string>
+    <string name="profileErrorNbPosts" >Couldn\'t retreive number of jokes</string>
+    <string name="profileImageUploaded" >Image has been uploaded</string>
+    <string name="registerUserError" >User couldn\'t be registered</string>
+    <string name="registerUserDatabaseError" >Error while adding user to database</string>
+    <string name="registerSuccess" >User registered successfully!</string>
+    <string name="registerEmptyEmail" >Email cannot be empty</string>
+    <string name="registerEmptyPassword" >Password cannot be empty</string>
+    <string name="registerEmptyFullname" >Fullname cannot be empty</string>
+    <string name="registerEmptyUsername" >Username cannot be empty</string>
+    <string name="registerEmptyAge" >Age cannot be empty</string>
+    <string name="addJokesEmptyTitle" />
+    <string name="addJokesEmptyContent" />
 
 </resources>

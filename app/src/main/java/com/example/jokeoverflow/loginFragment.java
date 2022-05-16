@@ -82,28 +82,27 @@ public class loginFragment extends Fragment {
 
     private void loginUser(){
 
-        // TODO : Reinforce the login security
         String userEmail = loginEmail.getText().toString();
         String userPassword = loginPassword.getText().toString();
 
         if(TextUtils.isEmpty(userEmail)){
-            loginEmail.setError("Email cannot be empty");
+            loginEmail.setError(getText(R.string.loginErrorEmptyEmail));
             loginEmail.requestFocus();
         } else if(TextUtils.isEmpty(userPassword)){
-            loginPassword.setError("Password cannot be empty");
+            loginPassword.setError(getText(R.string.loginErrorEmptyPassword));
             loginPassword.requestFocus();
-        }
-
-        authViewModel.loginUser(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(getContext(), "User logged successfully", Toast.LENGTH_SHORT).show();
-                    navController.navigate(R.id.homeFragment);
-                } else {
-                    Toast.makeText(getContext(), "User not logged", Toast.LENGTH_SHORT).show();
+        } else {
+            authViewModel.loginUser(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(getContext(), getText(R.string.loginSuccessfulLogin), Toast.LENGTH_SHORT).show();
+                        navController.navigate(R.id.homeFragment);
+                    } else {
+                        Toast.makeText(getContext(), getText(R.string.loginErrorLogin), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 }

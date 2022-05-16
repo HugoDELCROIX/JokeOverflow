@@ -57,5 +57,4 @@ public class ProfileViewModel extends ViewModel {
     public ApiCall getApiCall() {
         return jokeRepository.getRetrofit();
     }
-
 }

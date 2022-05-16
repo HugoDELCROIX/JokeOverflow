@@ -2,7 +2,9 @@ package com.example.jokeoverflow;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +76,9 @@ public class profileFragment extends Fragment {
     private TextView Result;
     private Button getData;
 
+    private Switch toastMode;
+    private SharedPreferences sp;
+
     public profileFragment() {
     }
 
@@ -92,6 +98,8 @@ public class profileFragment extends Fragment {
         score = view.findViewById(R.id.userScore);
         Result = view.findViewById(R.id.Result);
         getData = view.findViewById(R.id.getData);
+        toastMode = view.findViewById(R.id.toastMode);
+        sp = requireContext().getSharedPreferences("MyUserPrefs", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -102,6 +110,24 @@ public class profileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         initWidgets(view);
+
+//        We initialize the toggle button to the shared preference value
+        if (sp.getString("toastMode","false").equals("true")) {
+            toastMode.setChecked(true);
+        } else {
+            toastMode.setChecked(false);
+        }
+
+        toastMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Boolean switchState = toastMode.isChecked();
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("toastMode",switchState.toString());
+                editor.commit();
+//                Toast.makeText(requireActivity(),sp.getString("toastMode","false"), Toast.LENGTH_LONG).show();
+            }
+        });
 
         getData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,8 +144,12 @@ public class profileFragment extends Fragment {
                         }
 
                         String answer = "";
-                        answer = response.body().getJoke();
-                        Result.setText(answer);
+                        if (sp.getString("toastMode","false").equals("false")) {
+                            answer = response.body().getJoke();
+                            Result.setText(answer);
+                        } else {
+                            Toast.makeText(requireActivity(),response.body().getJoke(),Toast.LENGTH_LONG).show();
+                        }
                     }
 
                     @Override

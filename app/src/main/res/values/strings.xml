@@ -54,7 +54,6 @@
     <string name="menuProfile" >My Profile</string>
     <string name="toastJokeAdded" >Joke added!</string>
     <string name="toastJokeAddError" >Error when adding joke!</string>
-    <string name="categoryItemAll" translatable="false">All</string>
     <string name="categoryItemFun" translatable="false">Fun</string>
     <string name="categoryItemBook" translatable="false">Book</string>
     <string name="categoryItemHumor" translatable="false">Humor</string>
@@ -73,7 +72,13 @@
     <string name="registerEmptyFullname" >Fullname cannot be empty</string>
     <string name="registerEmptyUsername" >Username cannot be empty</string>
     <string name="registerEmptyAge" >Age cannot be empty</string>
-    <string name="addJokesEmptyTitle" />
-    <string name="addJokesEmptyContent" />
+    <string name="addJokesEmptyTitle" >Title cannot be empty</string>
+    <string name="addJokesEmptyContent" >Content cannot be empty</string>
+    <string name="categoryItemFood" >Food</string>
+    <string name="categoryItemGym" translatable="false">Gym</string>
+    <string name="categoryItemCar" >Car</string>
+    <string name="categoryItemSport" translatable="false">Sport</string>
+    <string name="categoryItemDad" >Dad</string>
+    <string name="categoryItemGeek" translatable="false">Geek</string>
 
 </resources>

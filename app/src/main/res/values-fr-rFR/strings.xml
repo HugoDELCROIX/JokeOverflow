@@ -3,12 +3,12 @@
     <string name="app_name">JokeOverflow</string>
     <string name="hello_home_fragment">Page d\'accueil</string>
     <string name="hello_leaderboard_fragment">Page classement</string>
-    <string name="hello_bestjokes_fragment">Page meilleurs blagues</string>
+    <string name="hello_bestjokes_fragment">Page meilleures blagues</string>
     <string name="hello_search_fragment">Page recherche</string>
     <string name="hello_addjoke_fragment">Page ajout de blagues</string>
     <string name="nav_home">Accueil</string>
     <string name="nav_leaderboard">Classement</string>
-    <string name="nav_bestjokes">Meilleurs</string>
+    <string name="nav_bestjokes">Meilleures blagues</string>
     <string name="nav_search">Rechercher</string>
     <string name="fab_contentDescription">Ajouter une blague</string>
     <string name="defaultJokeTitle">Titre d\'une blague</string>
@@ -23,7 +23,7 @@
     <string name="loginEmailTitle">Votre adresse email:</string>
     <string name="loginPasswordTitle">Votre mot de passe:</string>
     <string name="loginButton">Connexion!</string>
-    <string name="loginLinkRegister">S\'enregister ici!</string>
+    <string name="loginLinkRegister">S\'enregistrer ici!</string>
     <string name="profileLogoutButton">Déconnexion</string>
     <string name="profileInspirationButton">Inspire moi!</string>
     <string name="registerEmailTitle">Votre adresse email:</string>
@@ -34,7 +34,7 @@
     <string name="registerButton">Je m\'inscris!</string>
     <string name="registerLinkLogin">Connexion ici!</string>
     <string name="searchSearchButton">Rechercher…</string>
-    <string name="menuProfile">Mon profile</string>
+    <string name="menuProfile">Mon profil</string>
     <string name="toastJokeAdded">Blague ajoutée!</string>
     <string name="toastJokeAddError">Erreur pendant l\'ajout!</string>
     <string name="loginErrorEmptyEmail">L\'email ne peut pas être vide</string>
@@ -52,6 +52,9 @@
     <string name="registerEmptyFullname">Le nom complet doit être renseigné</string>
     <string name="registerEmptyUsername">Le nom d\'utilisateur doit être renseigné</string>
     <string name="registerEmptyAge">L\'age doit être renseigné</string>
-    <string name="addJokesEmptyTitle">Merci de remplri le titre</string>
+    <string name="addJokesEmptyTitle">Merci de remplir le titre</string>
     <string name="addJokesEmptyContent">Merci de remplir le contenu</string>
+    <string name="categoryItemDad">Papa</string>
+    <string name="categoryItemCar">Voiture</string>
+    <string name="categoryItemFood">Nourriture</string>
 </resources>

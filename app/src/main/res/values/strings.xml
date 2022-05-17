@@ -74,11 +74,13 @@
     <string name="registerEmptyAge" >Age cannot be empty</string>
     <string name="addJokesEmptyTitle" >Title cannot be empty</string>
     <string name="addJokesEmptyContent" >Content cannot be empty</string>
-    <string name="categoryItemFood" >Food</string>
+    <string name="categoryItemFood" translatable="false">Food</string>
     <string name="categoryItemGym" translatable="false">Gym</string>
-    <string name="categoryItemCar" >Car</string>
+    <string name="categoryItemCar" translatable="false">Car</string>
     <string name="categoryItemSport" translatable="false">Sport</string>
-    <string name="categoryItemDad" >Dad</string>
+    <string name="categoryItemDad" translatable="false">Dad</string>
     <string name="categoryItemGeek" translatable="false">Geek</string>
+    <string name="profileNbJokes" >joke(s)</string>
+    <string name="profileDisplayAsToast" >Display inspiration as a Toast</string>
 
 </resources>

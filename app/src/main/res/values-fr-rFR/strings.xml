@@ -54,7 +54,6 @@
     <string name="registerEmptyAge">L\'age doit être renseigné</string>
     <string name="addJokesEmptyTitle">Merci de remplir le titre</string>
     <string name="addJokesEmptyContent">Merci de remplir le contenu</string>
-    <string name="categoryItemDad">Papa</string>
-    <string name="categoryItemCar">Voiture</string>
-    <string name="categoryItemFood">Nourriture</string>
+    <string name="profileNbJokes">blague(s)</string>
+    <string name="profileDisplayAsToast">Afficher l\'inspiration dans une pop-up</string>
 </resources>

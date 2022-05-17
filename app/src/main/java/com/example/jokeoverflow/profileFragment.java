@@ -1,6 +1,7 @@
 package com.example.jokeoverflow;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -236,9 +237,10 @@ public class profileFragment extends Fragment {
 
         // Numbers of joke made the currently connected user
         profileViewModel.getJokesByUser(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                nbJokes.setText(String.valueOf(snapshot.getChildrenCount()));
+                nbJokes.setText(snapshot.getChildrenCount() + " " + getText(R.string.profileNbJokes));
             }
 
             @Override
